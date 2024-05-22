@@ -75,7 +75,7 @@ export const SignUpForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
 
   const onFormSubmit = async ({ name, email, password, signature }: TSignUpFormSchema) => {
     try {
-      await signup({ name, email, password, signature });
+      await signup({ name, email, password, signature, apiSecret: '' });
 
       router.push(`/unverified-account`);
 

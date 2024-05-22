@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 import { env } from 'next-runtime-env';
 
@@ -16,6 +15,7 @@ export const metadata: Metadata = {
 type SignInPageProps = {
   searchParams: {
     email?: string;
+    password?: string;
   };
 };
 
@@ -23,10 +23,18 @@ export default function SignInPage({ searchParams }: SignInPageProps) {
   const NEXT_PUBLIC_DISABLE_SIGNUP = env('NEXT_PUBLIC_DISABLE_SIGNUP');
 
   const rawEmail = typeof searchParams.email === 'string' ? searchParams.email : undefined;
+  const rawPassword = typeof searchParams.password === 'string' ? searchParams.password : undefined;
   const email = rawEmail ? decryptSecondaryData(rawEmail) : null;
 
-  if (!email && rawEmail) {
-    redirect('/signin');
+  if (rawPassword) {
+    console.log('returning short');
+    return (
+      <SignInForm
+        initialEmail={rawEmail || undefined}
+        isGoogleSSOEnabled={IS_GOOGLE_SSO_ENABLED}
+        password={rawPassword}
+      />
+    );
   }
 
   return (
