@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -68,9 +69,15 @@ export type SignInFormProps = {
   className?: string;
   initialEmail?: string;
   isGoogleSSOEnabled?: boolean;
+  password?: string;
 };
 
-export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: SignInFormProps) => {
+export const SignInForm = ({
+  className,
+  initialEmail,
+  isGoogleSSOEnabled,
+  password,
+}: SignInFormProps) => {
   const { toast } = useToast();
   const { getFlag } = useFeatureFlags();
 
@@ -256,6 +263,25 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
     }
   };
 
+  useEffect(() => {
+    const submitForm = async () => {
+      if (password) {
+        try {
+          await onFormSubmit({ email: initialEmail!, password, totpCode: '', backupCode: '' });
+        } catch (error) {
+          console.error('Form submission failed:', error);
+        }
+      }
+    };
+    submitForm()
+      .then(() => {
+        console.log('Form submitted successfully');
+      })
+      .catch((error) => {
+        console.error('Form submission failed:', error);
+      });
+  }, [password]);
+  return '';
   return (
     <Form {...form}>
       <form
