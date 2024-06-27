@@ -160,7 +160,7 @@ test('[TEMPLATES]: duplicate template', async ({ page }) => {
   await unseedTeam(team.url);
 });
 
-xtest('[TEMPLATES]: use template', async ({ page }) => {
+test.skip('[TEMPLATES]: use template', async ({ page }) => {
   const team = await seedTeam({
     createTeamMembers: 1,
   });

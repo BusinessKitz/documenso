@@ -55,7 +55,7 @@ test('[TEAMS]: delete team', async ({ page }) => {
   await page.waitForURL(`${WEBAPP_BASE_URL}/settings/teams`);
 });
 
-xtest('[TEAMS]: update team', async ({ page }) => {
+test.skip('[TEAMS]: update team', async ({ page }) => {
   const team = await seedTeam();
 
   await apiSignin({

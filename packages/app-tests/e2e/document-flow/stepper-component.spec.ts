@@ -47,7 +47,7 @@ test('[DOCUMENT_FLOW]: should be able to upload a PDF document', async ({ page }
   await page.waitForURL(/\/documents\/\d+/);
 });
 
-xtest('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) => {
+test.skip('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) => {
   const user = await seedUser();
   const document = await seedBlankDocument(user);
 
