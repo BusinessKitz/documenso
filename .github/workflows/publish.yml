@@ -11,7 +11,7 @@ env:
 jobs:
   build_and_publish_platform_containers:
     name: Build and publish platform containers
-    runs-on: ubuntu-latest
+    runs-on: warp-ubuntu-latest-x64-4x
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +30,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: tf-uat-documenso
+          BUILD_PLATFORM: arm64
         run: |
           APP_VERSION="$(git name-rev --tags --name-only $(git rev-parse HEAD) | head -n 1 | sed 's/\^0//')"
           GIT_SHA="$(git rev-parse HEAD)"
