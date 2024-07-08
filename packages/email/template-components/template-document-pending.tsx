@@ -21,7 +21,7 @@ export const TemplateDocumentPending = ({
       <Section>
         <Section className="mb-4">
           <Column align="center">
-            <Text className="text-base font-semibold text-blue-500">
+            <Text className="text-base font-semibold text-[#6414DB]">
               <Img
                 src={getAssetUrl('/static/clock.png')}
                 className="-mt-0.5 mr-2 inline h-7 w-7 align-middle"
