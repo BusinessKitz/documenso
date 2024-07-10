@@ -1,9 +1,8 @@
 @import '@documenso/ui/styles/theme.css';
-@import '@documenso/ui/styles/theme.css';
 /*overriding Documenso styles*/
 
 header {
-  display: none !important;
+ visibility: hidden;
 }
 
 a[href="/documents"] {
@@ -62,6 +61,9 @@ a[href="/documents"] {
   height: auto;
 }
 
+img[src*="background-pattern"] {
+  display: none;
+}
 
 
 
