@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
+import { Loader } from 'lucide-react';
 import { env } from 'next-runtime-env';
 
 import { IS_GOOGLE_SSO_ENABLED } from '@documenso/lib/constants/auth';
@@ -15,7 +17,6 @@ export const metadata: Metadata = {
 type SignInPageProps = {
   searchParams: {
     email?: string;
-    password?: string;
   };
 };
 
@@ -23,23 +24,25 @@ export default function SignInPage({ searchParams }: SignInPageProps) {
   const NEXT_PUBLIC_DISABLE_SIGNUP = env('NEXT_PUBLIC_DISABLE_SIGNUP');
 
   const rawEmail = typeof searchParams.email === 'string' ? searchParams.email : undefined;
-  const rawPassword = typeof searchParams.password === 'string' ? searchParams.password : undefined;
   const email = rawEmail ? decryptSecondaryData(rawEmail) : null;
 
-  if (rawPassword) {
-    console.log('returning short');
-    return (
-      <SignInForm
-        initialEmail={rawEmail || undefined}
-        isGoogleSSOEnabled={IS_GOOGLE_SSO_ENABLED}
-        password={rawPassword}
-      />
-    );
+  if (!email && rawEmail) {
+    redirect('/signin');
   }
 
   return (
-    <div className="w-screen max-w-lg px-4">
-      <div className="border-border dark:bg-background z-10 rounded-xl border bg-neutral-100 p-6">
+    <div className="w-screen max-w-lg bg-white px-4">
+      <div
+        className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100"
+        style={{ visibility: 'visible' }}
+      >
+        <Loader className="text-primary h-16 w-16 animate-spin" />
+      </div>
+
+      <div
+        className="border-border dark:bg-background z-10 rounded-xl border bg-neutral-100 p-6"
+        style={{ visibility: 'hidden' }}
+      >
         <h1 className="text-2xl font-semibold">Sign in to your account</h1>
 
         <p className="text-muted-foreground mt-2 text-sm">

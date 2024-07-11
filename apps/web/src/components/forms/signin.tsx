@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -69,22 +68,21 @@ export type SignInFormProps = {
   className?: string;
   initialEmail?: string;
   isGoogleSSOEnabled?: boolean;
-  password?: string;
 };
 
-export const SignInForm = ({
-  className,
-  initialEmail,
-  isGoogleSSOEnabled,
-  password,
-}: SignInFormProps) => {
+export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: SignInFormProps) => {
   const { toast } = useToast();
   const { getFlag } = useFeatureFlags();
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const router = useRouter();
 
   const [isTwoFactorAuthenticationDialogOpen, setIsTwoFactorAuthenticationDialogOpen] =
     useState(false);
+
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [redirectUrl, setRedirectUrl] = useState<string>('');
 
   const [twoFactorAuthenticationMethod, setTwoFactorAuthenticationMethod] = useState<
     'totp' | 'backup'
@@ -99,8 +97,8 @@ export const SignInForm = ({
 
   const form = useForm<TSignInFormSchema>({
     values: {
-      email: initialEmail ?? '',
-      password: '',
+      email: emailValue,
+      password: passwordValue,
       totpCode: '',
       backupCode: '',
     },
@@ -239,8 +237,7 @@ export const SignInForm = ({
       if (!result?.url) {
         throw new Error('An unknown error occurred');
       }
-
-      window.location.href = result.url;
+      window.location.href = redirectUrl ? redirectUrl : result.url;
     } catch (err) {
       toast({
         title: 'An unknown error occurred',
@@ -264,27 +261,32 @@ export const SignInForm = ({
   };
 
   useEffect(() => {
-    const submitForm = async () => {
-      if (password) {
-        try {
-          await onFormSubmit({ email: initialEmail!, password, totpCode: '', backupCode: '' });
-        } catch (error) {
-          console.error('Form submission failed:', error);
+    window.addEventListener(
+      'message',
+      (event) => {
+        if (event.data && event.data.email && event.data.password) {
+          setEmailValue(event.data.email);
+          setPasswordValue(event.data.password);
+          setRedirectUrl(event.data.address);
         }
-      }
-    };
-    submitForm()
-      .then(() => {
-        console.log('Form submitted successfully');
-      })
-      .catch((error) => {
-        console.error('Form submission failed:', error);
-      });
-  }, [password]);
-  return '';
+      },
+      false,
+    );
+  }, []);
+
+  useEffect(() => {
+    if (emailValue && passwordValue) {
+      /*formRef?.current.dispatchEvent(
+        new Event("submit", {cancelable: true, bubbles: true})
+      );*/
+      onFormSubmit({ email: emailValue, password: passwordValue }).catch(() => {});
+    }
+  }, [emailValue, passwordValue]);
+
   return (
     <Form {...form}>
       <form
+        ref={formRef}
         className={cn('flex w-full flex-col gap-y-4', className)}
         onSubmit={form.handleSubmit(onFormSubmit)}
       >
@@ -300,7 +302,7 @@ export const SignInForm = ({
                 <FormLabel>Email</FormLabel>
 
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input {...field} type="email" />
                 </FormControl>
 
                 <FormMessage />
