@@ -1,6 +1,6 @@
 'use client';
-
-import { useMemo, useState } from 'react';
+import {signOut} from 'next-auth/react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -38,7 +38,7 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
 
   const { quota, remaining } = useLimits();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { mutateAsync: createDocument } = trpc.document.createDocument.useMutation();
 
@@ -122,8 +122,24 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
     });
   };
 
+  useEffect(()=>{
+    window.addEventListener(
+      'message',
+      (event) => {
+        if (event.data && event.data.email && session) {
+          if (!session || (session.user.email !== event.data.email)) {
+            signOut();
+          }else{
+            setIsLoading(false);
+          }
+        }
+      },
+      false,
+    );
+  },[])
+
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn( className)}>
       <DocumentDropzone
         className="h-[min(400px,50vh)]"
         disabled={remaining.documents === 0 || !session?.user.emailVerified}
@@ -143,8 +159,10 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
       </div>
 
       {isLoading && (
-        <div className="bg-background/50 absolute inset-0 flex items-center justify-center rounded-lg">
-          <Loader className="text-muted-foreground h-12 w-12 animate-spin" />
+        <div
+          className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-50"
+        >
+          <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
         </div>
       )}
     </div>

@@ -36,7 +36,7 @@ export default function SignInPage({ searchParams }: SignInPageProps) {
         className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100"
         style={{ visibility: 'visible' }}
       >
-        <Loader className="text-primary h-16 w-16 animate-spin" />
+        <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
       </div>
 
       <div
