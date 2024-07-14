@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
+import type {Metadata} from 'next';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import {redirect} from 'next/navigation';
 
-import { Loader } from 'lucide-react';
-import { env } from 'next-runtime-env';
+import {Loader} from 'lucide-react';
+import {env} from 'next-runtime-env';
 
-import { IS_GOOGLE_SSO_ENABLED } from '@documenso/lib/constants/auth';
-import { decryptSecondaryData } from '@documenso/lib/server-only/crypto/decrypt';
+import {IS_GOOGLE_SSO_ENABLED} from '@documenso/lib/constants/auth';
+import {decryptSecondaryData} from '@documenso/lib/server-only/crypto/decrypt';
 
-import { SignInForm } from '~/components/forms/signin';
+import {SignInForm} from '~/components/forms/signin';
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -20,7 +20,7 @@ type SignInPageProps = {
   };
 };
 
-export default function SignInPage({ searchParams }: SignInPageProps) {
+export default function SignInPage({searchParams}: SignInPageProps) {
   const NEXT_PUBLIC_DISABLE_SIGNUP = env('NEXT_PUBLIC_DISABLE_SIGNUP');
 
   const rawEmail = typeof searchParams.email === 'string' ? searchParams.email : undefined;
@@ -32,26 +32,18 @@ export default function SignInPage({ searchParams }: SignInPageProps) {
 
   return (
     <div className="w-screen max-w-lg bg-white px-4">
-      <div
-        className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100"
-        style={{ visibility: 'visible' }}
-      >
-        <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
-      </div>
 
       <div
-        className="border-border dark:bg-background z-10 rounded-xl border bg-neutral-100 p-6"
-        style={{ visibility: 'hidden' }}
-      >
+        className="border-border dark:bg-background z-10 rounded-xl border bg-neutral-100 p-6">
         <h1 className="text-2xl font-semibold">Sign in to your account</h1>
 
         <p className="text-muted-foreground mt-2 text-sm">
           Welcome back, we are lucky to have you.
         </p>
 
-        <hr className="-mx-6 my-4" />
+        <hr className="-mx-6 my-4"/>
 
-        <SignInForm initialEmail={email || undefined} isGoogleSSOEnabled={IS_GOOGLE_SSO_ENABLED} />
+        <SignInForm initialEmail={email || undefined} isGoogleSSOEnabled={IS_GOOGLE_SSO_ENABLED}/>
 
         {NEXT_PUBLIC_DISABLE_SIGNUP !== 'true' && (
           <p className="text-muted-foreground mt-6 text-center text-sm">

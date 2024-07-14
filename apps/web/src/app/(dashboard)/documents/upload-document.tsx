@@ -1,24 +1,24 @@
 'use client';
 import {signOut} from 'next-auth/react';
-import { useMemo, useState, useEffect } from 'react';
+import {useMemo, useState, useEffect} from 'react';
 
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
-import { Loader } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import {Loader} from 'lucide-react';
+import {useSession} from 'next-auth/react';
 
-import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
-import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
-import { APP_DOCUMENT_UPLOAD_SIZE_LIMIT } from '@documenso/lib/constants/app';
-import { AppError } from '@documenso/lib/errors/app-error';
-import { createDocumentData } from '@documenso/lib/server-only/document-data/create-document-data';
-import { putPdfFile } from '@documenso/lib/universal/upload/put-file';
-import { formatDocumentsPath } from '@documenso/lib/utils/teams';
-import { TRPCClientError } from '@documenso/trpc/client';
-import { trpc } from '@documenso/trpc/react';
-import { cn } from '@documenso/ui/lib/utils';
-import { DocumentDropzone } from '@documenso/ui/primitives/document-dropzone';
-import { useToast } from '@documenso/ui/primitives/use-toast';
+import {useLimits} from '@documenso/ee/server-only/limits/provider/client';
+import {useAnalytics} from '@documenso/lib/client-only/hooks/use-analytics';
+import {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} from '@documenso/lib/constants/app';
+import {AppError} from '@documenso/lib/errors/app-error';
+import {createDocumentData} from '@documenso/lib/server-only/document-data/create-document-data';
+import {putPdfFile} from '@documenso/lib/universal/upload/put-file';
+import {formatDocumentsPath} from '@documenso/lib/utils/teams';
+import {TRPCClientError} from '@documenso/trpc/client';
+import {trpc} from '@documenso/trpc/react';
+import {cn} from '@documenso/ui/lib/utils';
+import {DocumentDropzone} from '@documenso/ui/primitives/document-dropzone';
+import {useToast} from '@documenso/ui/primitives/use-toast';
 
 export type UploadDocumentProps = {
   className?: string;
@@ -28,19 +28,19 @@ export type UploadDocumentProps = {
   };
 };
 
-export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
+export const UploadDocument = ({className, team}: UploadDocumentProps) => {
   const router = useRouter();
   const analytics = useAnalytics();
 
-  const { data: session } = useSession();
+  const {data: session} = useSession();
 
-  const { toast } = useToast();
+  const {toast} = useToast();
 
-  const { quota, remaining } = useLimits();
+  const {quota, remaining} = useLimits();
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const { mutateAsync: createDocument } = trpc.document.createDocument.useMutation();
+  const {mutateAsync: createDocument} = trpc.document.createDocument.useMutation();
 
   const disabledMessage = useMemo(() => {
     if (remaining.documents === 0) {
@@ -58,14 +58,14 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
     try {
       setIsLoading(true);
 
-      const { type, data } = await putPdfFile(file);
+      const {type, data} = await putPdfFile(file);
 
-      const { id: documentDataId } = await createDocumentData({
+      const {id: documentDataId} = await createDocumentData({
         type,
         data,
       });
 
-      const { id } = await createDocument({
+      const {id} = await createDocument({
         title: file.name,
         documentDataId,
         teamId: team?.id,
@@ -122,24 +122,30 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
     });
   };
 
-  useEffect(()=>{
-    window.addEventListener(
-      'message',
-      (event) => {
-        if (event.data && event.data.email && session) {
-          if (!session || (session.user.email !== event.data.email)) {
-            signOut();
-          }else{
-            setIsLoading(false);
+  useEffect(() => {
+
+    if (window.self !== window.top) {
+      window.addEventListener(
+        'message',
+        (event) => {
+          if (event.data && event.data.email && session) {
+            if (!session || (session.user.email !== event.data.email)) {
+              signOut();
+            } else {
+              setIsLoading(false);
+            }
           }
-        }
-      },
-      false,
-    );
-  },[])
+        },
+        false,
+      );
+    } else {
+      setIsLoading(false);
+    }
+
+  }, [])
 
   return (
-    <div className={cn( className)}>
+    <div className={cn(className)}>
       <DocumentDropzone
         className="h-[min(400px,50vh)]"
         disabled={remaining.documents === 0 || !session?.user.emailVerified}
