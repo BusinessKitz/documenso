@@ -66,8 +66,8 @@ export const ClaimAccount = ({ defaultName, defaultEmail }: ClaimAccountProps) =
 
   const onFormSubmit = async ({ name, email, password }: TClaimAccountFormSchema) => {
     try {
-      //@ts-ignore
-      await signup({ name, email, password });
+
+      await signup({ name, email, password, apiSecret:'' });
 
       router.push(`/unverified-account`);
 

@@ -112,7 +112,7 @@ export const SignUpFormV2 = ({
 
   const onFormSubmit = async ({ name, email, password, signature, url }: TSignUpFormV2Schema) => {
     try {
-      await signup({ name, email, password, signature, url });
+      await signup({ name, email, password, signature, url, apiSecret: '' });
 
       router.push(`/unverified-account`);
 
