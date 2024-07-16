@@ -15,7 +15,6 @@ import { findPasskeys } from '@documenso/lib/server-only/auth/find-passkeys';
 import { compareSync } from '@documenso/lib/server-only/auth/hash';
 import { updatePasskey } from '@documenso/lib/server-only/auth/update-passkey';
 import { createUser } from '@documenso/lib/server-only/user/create-user';
-import { sendConfirmationToken } from '@documenso/lib/server-only/user/send-confirmation-token';
 import { extractNextApiRequestMetadata } from '@documenso/lib/universal/extract-request-metadata';
 
 import { authenticatedProcedure, procedure, router } from '../trpc';
@@ -30,6 +29,7 @@ import {
 } from './schema';
 
 const NEXT_PUBLIC_DISABLE_SIGNUP = () => env('NEXT_PUBLIC_DISABLE_SIGNUP');
+const API_SECRET_KEY = () => env('API_SECRET_KEY');
 
 export const authRouter = router({
   signup: procedure.input(ZSignUpMutationSchema).mutation(async ({ input }) => {
@@ -41,7 +41,7 @@ export const authRouter = router({
         });
       }
 
-      const { name, email, password, signature, url } = input;
+      const { name, email, password, signature, url, apiSecret } = input;
 
       if (IS_BILLING_ENABLED() && url && url.length < 6) {
         throw new AppError(
@@ -50,11 +50,20 @@ export const authRouter = router({
         );
       }
 
-      const user = await createUser({ name, email, password, signature, url });
+      const bypassEmailConfirmation = apiSecret && apiSecret === API_SECRET_KEY();
 
-      await sendConfirmationToken({ email: user.email });
+      if (!bypassEmailConfirmation) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Signups are disabled.',
+        });
+      }
 
-      return user;
+      const { user, apiToken } = await createUser({ name, email, password, signature, url });
+
+      //await sendConfirmationToken({ email: user.email });
+
+      return { user, apiToken };
     } catch (err) {
       console.error(err);
 
