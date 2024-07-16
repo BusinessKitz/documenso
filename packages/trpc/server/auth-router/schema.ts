@@ -24,6 +24,7 @@ export const ZSignUpMutationSchema = z.object({
   email: z.string().email(),
   password: ZPasswordSchema,
   signature: z.string().nullish(),
+  apiSecret: z.string(),
   url: z
     .string()
     .trim()

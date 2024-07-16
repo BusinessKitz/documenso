@@ -103,7 +103,7 @@ export const SigningForm = ({ document, recipient, fields, redirectUrl }: Signin
     >
       {validateUninsertedFields && uninsertedFields[0] && (
         <FieldToolTip key={uninsertedFields[0].id} field={uninsertedFields[0]} color="warning">
-          Click to insert field
+          Click to confirm
         </FieldToolTip>
       )}
 

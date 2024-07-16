@@ -1,26 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { browserSupportsWebAuthn, startAuthentication } from '@simplewebauthn/browser';
-import { KeyRoundIcon } from 'lucide-react';
-import { signIn } from 'next-auth/react';
-import { useForm } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
-import { match } from 'ts-pattern';
-import { z } from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {browserSupportsWebAuthn, startAuthentication} from '@simplewebauthn/browser';
+import {KeyRoundIcon, Loader} from 'lucide-react';
+import {signIn} from 'next-auth/react';
+import {useForm} from 'react-hook-form';
+import {FcGoogle} from 'react-icons/fc';
+import {match} from 'ts-pattern';
+import {z} from 'zod';
 
-import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
-import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
-import { ErrorCode, isErrorCode } from '@documenso/lib/next-auth/error-codes';
-import { trpc } from '@documenso/trpc/react';
-import { ZCurrentPasswordSchema } from '@documenso/trpc/server/auth-router/schema';
-import { cn } from '@documenso/ui/lib/utils';
-import { Button } from '@documenso/ui/primitives/button';
+import {useFeatureFlags} from '@documenso/lib/client-only/providers/feature-flag';
+import {AppError, AppErrorCode} from '@documenso/lib/errors/app-error';
+import {ErrorCode, isErrorCode} from '@documenso/lib/next-auth/error-codes';
+import {trpc} from '@documenso/trpc/react';
+import {ZCurrentPasswordSchema} from '@documenso/trpc/server/auth-router/schema';
+import {cn} from '@documenso/ui/lib/utils';
+import {Button} from '@documenso/ui/primitives/button';
 import {
   Dialog,
   DialogContent,
@@ -36,9 +36,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
-import { Input } from '@documenso/ui/primitives/input';
-import { PasswordInput } from '@documenso/ui/primitives/password-input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
+import {Input} from '@documenso/ui/primitives/input';
+import {PasswordInput} from '@documenso/ui/primitives/password-input';
+import {useToast} from '@documenso/ui/primitives/use-toast';
 
 const ERROR_MESSAGES: Partial<Record<keyof typeof ErrorCode, string>> = {
   [ErrorCode.CREDENTIALS_NOT_FOUND]: 'The email or password provided is incorrect',
@@ -70,14 +70,20 @@ export type SignInFormProps = {
   isGoogleSSOEnabled?: boolean;
 };
 
-export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: SignInFormProps) => {
-  const { toast } = useToast();
-  const { getFlag } = useFeatureFlags();
+export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignInFormProps) => {
+  const {toast} = useToast();
+  const {getFlag} = useFeatureFlags();
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const router = useRouter();
 
   const [isTwoFactorAuthenticationDialogOpen, setIsTwoFactorAuthenticationDialogOpen] =
     useState(false);
+
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [redirectUrl, setRedirectUrl] = useState<string>('');
+  const [isInIframe, setIsInIframe] = useState(true);
 
   const [twoFactorAuthenticationMethod, setTwoFactorAuthenticationMethod] = useState<
     'totp' | 'backup'
@@ -87,13 +93,13 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
 
   const isPasskeyEnabled = getFlag('app_passkey');
 
-  const { mutateAsync: createPasskeySigninOptions } =
+  const {mutateAsync: createPasskeySigninOptions} =
     trpc.auth.createPasskeySigninOptions.useMutation();
 
   const form = useForm<TSignInFormSchema>({
     values: {
-      email: initialEmail ?? '',
-      password: '',
+      email: emailValue,
+      password: passwordValue,
       totpCode: '',
       backupCode: '',
     },
@@ -180,7 +186,7 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
     }
   };
 
-  const onFormSubmit = async ({ email, password, totpCode, backupCode }: TSignInFormSchema) => {
+  const onFormSubmit = async ({email, password, totpCode, backupCode}: TSignInFormSchema) => {
     try {
       const credentials: Record<string, string> = {
         email,
@@ -232,8 +238,7 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
       if (!result?.url) {
         throw new Error('An unknown error occurred');
       }
-
-      window.location.href = result.url;
+      window.location.href = redirectUrl ? redirectUrl : result.url;
     } catch (err) {
       toast({
         title: 'An unknown error occurred',
@@ -245,7 +250,7 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
 
   const onSignInWithGoogleClick = async () => {
     try {
-      await signIn('google', { callbackUrl: LOGIN_REDIRECT_PATH });
+      await signIn('google', {callbackUrl: LOGIN_REDIRECT_PATH});
     } catch (err) {
       toast({
         title: 'An unknown error occurred',
@@ -256,167 +261,203 @@ export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: Sign
     }
   };
 
-  return (
-    <Form {...form}>
-      <form
-        className={cn('flex w-full flex-col gap-y-4', className)}
-        onSubmit={form.handleSubmit(onFormSubmit)}
+  useEffect(() => {
+    if (window.self !== window.top) {
+      window.addEventListener(
+        'message',
+        (event) => {
+          if (event.data && event.data.email && event.data.password) {
+            setEmailValue(event.data.email);
+            setPasswordValue(event.data.password);
+            setRedirectUrl(event.data.address);
+          }
+        },
+        false,
+      );
+      setIsInIframe(true);
+    } else {
+      setIsInIframe(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (emailValue && passwordValue) {
+      /*formRef?.current.dispatchEvent(
+        new Event("submit", {cancelable: true, bubbles: true})
+      );*/
+      onFormSubmit({email: emailValue, password: passwordValue}).catch(() => {
+      });
+    }
+  }, [emailValue, passwordValue]);
+
+  return (<>
+      {isInIframe && <div
+        className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100"
       >
-        <fieldset
-          className="flex w-full flex-col gap-y-4"
-          disabled={isSubmitting || isPasskeyLoading}
+        <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
+      </div>}
+      <Form {...form}>
+        <form
+          ref={formRef}
+          className={cn('flex w-full flex-col gap-y-4', className)}
+          onSubmit={form.handleSubmit(onFormSubmit)}
         >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-
-                <FormControl>
-                  <Input type="email" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-
-                <FormControl>
-                  <PasswordInput {...field} />
-                </FormControl>
-
-                <FormMessage />
-
-                <p className="mt-2 text-right">
-                  <Link
-                    href="/forgot-password"
-                    className="text-muted-foreground text-sm duration-200 hover:opacity-70"
-                  >
-                    Forgot your password?
-                  </Link>
-                </p>
-              </FormItem>
-            )}
-          />
-
-          <Button
-            type="submit"
-            size="lg"
-            loading={isSubmitting}
-            className="dark:bg-documenso dark:hover:opacity-90"
+          <fieldset
+            className="flex w-full flex-col gap-y-4"
+            disabled={isSubmitting || isPasskeyLoading}
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
-          </Button>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
 
-          {(isGoogleSSOEnabled || isPasskeyEnabled) && (
-            <div className="relative flex items-center justify-center gap-x-4 py-2 text-xs uppercase">
-              <div className="bg-border h-px flex-1" />
-              <span className="text-muted-foreground bg-transparent">Or continue with</span>
-              <div className="bg-border h-px flex-1" />
-            </div>
-          )}
+                  <FormControl>
+                    <Input {...field} type="email"/>
+                  </FormControl>
 
-          {isGoogleSSOEnabled && (
-            <Button
-              type="button"
-              size="lg"
-              variant="outline"
-              className="bg-background text-muted-foreground border"
-              disabled={isSubmitting}
-              onClick={onSignInWithGoogleClick}
-            >
-              <FcGoogle className="mr-2 h-5 w-5" />
-              Google
-            </Button>
-          )}
-
-          {isPasskeyEnabled && (
-            <Button
-              type="button"
-              size="lg"
-              variant="outline"
-              disabled={isSubmitting}
-              loading={isPasskeyLoading}
-              className="bg-background text-muted-foreground border"
-              onClick={onSignInWithPasskey}
-            >
-              {!isPasskeyLoading && <KeyRoundIcon className="-ml-1 mr-1 h-5 w-5" />}
-              Passkey
-            </Button>
-          )}
-        </fieldset>
-      </form>
-
-      <Dialog
-        open={isTwoFactorAuthenticationDialogOpen}
-        onOpenChange={onCloseTwoFactorAuthenticationDialog}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Two-Factor Authentication</DialogTitle>
-          </DialogHeader>
-
-          <form onSubmit={form.handleSubmit(onFormSubmit)}>
-            <fieldset disabled={isSubmitting}>
-              {twoFactorAuthenticationMethod === 'totp' && (
-                <FormField
-                  control={form.control}
-                  name="totpCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Authentication Token</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormMessage/>
+                </FormItem>
               )}
+            />
 
-              {twoFactorAuthenticationMethod === 'backup' && (
-                <FormField
-                  control={form.control}
-                  name="backupCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel> Backup Code</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+
+                  <FormControl>
+                    <PasswordInput {...field} />
+                  </FormControl>
+
+                  <FormMessage/>
+
+                  <p className="mt-2 text-right">
+                    <Link
+                      href="/forgot-password"
+                      className="text-muted-foreground text-sm duration-200 hover:opacity-70"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </p>
+                </FormItem>
               )}
+            />
 
-              <DialogFooter className="mt-4">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={onToggleTwoFactorAuthenticationMethodClick}
-                >
-                  {twoFactorAuthenticationMethod === 'totp'
-                    ? 'Use Backup Code'
-                    : 'Use Authenticator'}
-                </Button>
+            <Button
+              type="submit"
+              size="lg"
+              loading={isSubmitting}
+              className="dark:bg-documenso dark:hover:opacity-90"
+            >
+              {isSubmitting ? 'Signing in...' : 'Sign In'}
+            </Button>
 
-                <Button type="submit" loading={isSubmitting}>
-                  {isSubmitting ? 'Signing in...' : 'Sign In'}
-                </Button>
-              </DialogFooter>
-            </fieldset>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </Form>
+            {(isGoogleSSOEnabled || isPasskeyEnabled) && (
+              <div className="relative flex items-center justify-center gap-x-4 py-2 text-xs uppercase">
+                <div className="bg-border h-px flex-1"/>
+                <span className="text-muted-foreground bg-transparent">Or continue with</span>
+                <div className="bg-border h-px flex-1"/>
+              </div>
+            )}
+
+            {isGoogleSSOEnabled && (
+              <Button
+                type="button"
+                size="lg"
+                variant="outline"
+                className="bg-background text-muted-foreground border"
+                disabled={isSubmitting}
+                onClick={onSignInWithGoogleClick}
+              >
+                <FcGoogle className="mr-2 h-5 w-5"/>
+                Google
+              </Button>
+            )}
+
+            {isPasskeyEnabled && (
+              <Button
+                type="button"
+                size="lg"
+                variant="outline"
+                disabled={isSubmitting}
+                loading={isPasskeyLoading}
+                className="bg-background text-muted-foreground border"
+                onClick={onSignInWithPasskey}
+              >
+                {!isPasskeyLoading && <KeyRoundIcon className="-ml-1 mr-1 h-5 w-5"/>}
+                Passkey
+              </Button>
+            )}
+          </fieldset>
+        </form>
+
+        <Dialog
+          open={isTwoFactorAuthenticationDialogOpen}
+          onOpenChange={onCloseTwoFactorAuthenticationDialog}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Two-Factor Authentication</DialogTitle>
+            </DialogHeader>
+
+            <form onSubmit={form.handleSubmit(onFormSubmit)}>
+              <fieldset disabled={isSubmitting}>
+                {twoFactorAuthenticationMethod === 'totp' && (
+                  <FormField
+                    control={form.control}
+                    name="totpCode"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Authentication Token</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {twoFactorAuthenticationMethod === 'backup' && (
+                  <FormField
+                    control={form.control}
+                    name="backupCode"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel> Backup Code</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                <DialogFooter className="mt-4">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={onToggleTwoFactorAuthenticationMethodClick}
+                  >
+                    {twoFactorAuthenticationMethod === 'totp'
+                      ? 'Use Backup Code'
+                      : 'Use Authenticator'}
+                  </Button>
+
+                  <Button type="submit" loading={isSubmitting}>
+                    {isSubmitting ? 'Signing in...' : 'Sign In'}
+                  </Button>
+                </DialogFooter>
+              </fieldset>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </Form>
+    </>
   );
 };

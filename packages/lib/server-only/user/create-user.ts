@@ -3,11 +3,15 @@ import { hash } from '@node-rs/bcrypt';
 import { getStripeCustomerByUser } from '@documenso/ee/server-only/stripe/get-customer';
 import { updateSubscriptionItemQuantity } from '@documenso/ee/server-only/stripe/update-subscription-item-quantity';
 import { prisma } from '@documenso/prisma';
+import type { User } from '@documenso/prisma/client';
 import { IdentityProvider, Prisma, TeamMemberInviteStatus } from '@documenso/prisma/client';
 
 import { IS_BILLING_ENABLED } from '../../constants/app';
 import { SALT_ROUNDS } from '../../constants/auth';
 import { AppError, AppErrorCode } from '../../errors/app-error';
+import { createApiToken } from '../public-api/create-api-token';
+
+// Import the createApiToken function
 
 export interface CreateUserOptions {
   name: string;
@@ -17,7 +21,21 @@ export interface CreateUserOptions {
   url?: string;
 }
 
-export const createUser = async ({ name, email, password, signature, url }: CreateUserOptions) => {
+export interface CreateUserResponse {
+  user: User;
+  apiToken: {
+    id: number;
+    token: string;
+  };
+}
+
+export const createUser = async ({
+  name,
+  email,
+  password,
+  signature,
+  url,
+}: CreateUserOptions): Promise<CreateUserResponse> => {
   const hashedPassword = await hash(password, SALT_ROUNDS);
 
   const userExists = await prisma.user.findFirst({
@@ -54,6 +72,7 @@ export const createUser = async ({ name, email, password, signature, url }: Crea
       signature,
       identityProvider: IdentityProvider.DOCUMENSO,
       url,
+      emailVerified: new Date(),
     },
   });
 
@@ -129,14 +148,22 @@ export const createUser = async ({ name, email, password, signature, url }: Crea
     ),
   );
 
+  // Create API token for the new user
+  const apiToken = await createApiToken({
+    userId: user.id,
+    tokenName: 'Default API Token',
+    expiresIn: null, // or any appropriate duration string like '1d', '1h'
+  });
+
   // Update the user record with a new or existing Stripe customer record.
   if (IS_BILLING_ENABLED()) {
     try {
-      return await getStripeCustomerByUser(user).then((session) => session.user);
+      const stripeUser = await getStripeCustomerByUser(user).then((session) => session.user);
+      return { user: stripeUser, apiToken };
     } catch (err) {
       console.error(err);
     }
   }
 
-  return user;
+  return { user, apiToken };
 };

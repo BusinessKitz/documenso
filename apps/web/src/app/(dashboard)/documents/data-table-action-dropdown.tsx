@@ -12,7 +12,7 @@ import {
   EyeIcon,
   Loader,
   MoreHorizontal,
-  Pencil,
+  Pencil, ScrollTextIcon,
   Share,
   Trash2,
 } from 'lucide-react';
@@ -25,6 +25,7 @@ import type { Document, Recipient, Team, User } from '@documenso/prisma/client';
 import type { DocumentWithData } from '@documenso/prisma/types/document-with-data';
 import { trpc as trpcClient } from '@documenso/trpc/client';
 import { DocumentShareButton } from '@documenso/ui/components/document/document-share-button';
+import {DownloadCertificateButton} from "~/app/(dashboard)/documents/[id]/logs/download-certificate-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -157,6 +158,15 @@ export const DataTableActionDropdown = ({ row, team }: DataTableActionDropdownPr
           Duplicate
         </DropdownMenuItem>
 
+        <DropdownMenuItem asChild>
+          <Link href={`${documentsPath}/${row.id}/logs`}>
+            <ScrollTextIcon className="mr-2 h-4 w-4" />
+            Audit Log
+          </Link>
+        </DropdownMenuItem>
+
+        <DownloadCertificateButton documentId={row.id} documentStatus={row.status} className="h-auto w-full sm:w-full px-1.5 justify-start py-1.5 border-none"/>
+
         {/* No point displaying this if there's no functionality. */}
         {/* <DropdownMenuItem disabled>
           <XCircle className="mr-2 h-4 w-4" />
@@ -187,6 +197,7 @@ export const DataTableActionDropdown = ({ row, team }: DataTableActionDropdownPr
             </DropdownMenuItem>
           )}
         />
+
       </DropdownMenuContent>
 
       <DeleteDocumentDialog
