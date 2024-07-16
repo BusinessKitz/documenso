@@ -130,7 +130,7 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
         (event) => {
           if (event.data && event.data.email && session) {
             if (!session || (session.user.email !== event.data.email)) {
-              signOut();
+              signOut().catch(()=>{});
             } else {
               setIsLoading(false);
             }
