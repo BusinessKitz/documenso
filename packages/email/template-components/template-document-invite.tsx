@@ -55,7 +55,7 @@ export const TemplateDocumentInvite = ({
             className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-center text-sm font-medium text-white no-underline"
             href={signDocumentLink}
           >
-            {actionVerb} Document
+            {actionVerb} document
           </Button>
           {/*<Button
             className="bg-documenso-500 inline-flex items-center justify-center rounded-lg px-6 py-3 text-center text-sm font-medium text-white no-underline"

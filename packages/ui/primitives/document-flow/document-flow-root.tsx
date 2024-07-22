@@ -132,7 +132,7 @@ export const DocumentFlowFormContainerActions = ({
   canGoBack = true,
   canGoNext = true,
   goNextLabel = 'Continue',
-  goBackLabel = 'Go Back',
+  goBackLabel = 'Go back',
   onGoBackClick,
   onGoNextClick,
   loading,

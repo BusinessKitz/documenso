@@ -33,7 +33,7 @@ test('[DOCUMENT_AUTH]: should allow signing when no auth setup', async ({ page }
     const signUrl = `/sign/${token}`;
 
     await page.goto(signUrl);
-    await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
     // Add signature.
     const canvas = page.locator('canvas');
@@ -49,8 +49,8 @@ test('[DOCUMENT_AUTH]: should allow signing when no auth setup', async ({ page }
       await page.locator(`#field-${field.id}`).getByRole('button').click();
 
       if (field.type === FieldType.TEXT) {
-        await page.getByLabel('Custom Text').fill('TEXT');
-        await page.getByRole('button', { name: 'Save Text' }).click();
+        await page.getByLabel('Custom text').fill('TEXT');
+        await page.getByRole('button', { name: 'Save text' }).click();
       }
 
       await expect(page.locator(`#field-${field.id}`)).toHaveAttribute('data-inserted', 'true');
@@ -93,7 +93,7 @@ test('[DOCUMENT_AUTH]: should allow signing with valid global auth', async ({ pa
     redirectPath: signUrl,
   });
 
-  await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
   // Add signature.
   const canvas = page.locator('canvas');
@@ -109,7 +109,7 @@ test('[DOCUMENT_AUTH]: should allow signing with valid global auth', async ({ pa
     await page.locator(`#field-${field.id}`).getByRole('button').click();
 
     if (field.type === FieldType.TEXT) {
-      await page.getByLabel('Custom Text').fill('TEXT');
+      await page.getByLabel('Custom text').fill('TEXT');
       await page.getByRole('button', { name: 'Save Text' }).click();
     }
 
@@ -148,7 +148,7 @@ test.skip('[DOCUMENT_AUTH]: should deny signing document when required for globa
   const { token } = recipient;
 
   await page.goto(`/sign/${token}`);
-  await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Complete' }).click();
   await expect(page.getByRole('paragraph')).toContainText(
@@ -182,7 +182,7 @@ test('[DOCUMENT_AUTH]: should deny signing fields when required for global auth'
     const { token, Field } = recipient;
 
     await page.goto(`/sign/${token}`);
-    await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
     for (const field of Field) {
       if (field.type !== FieldType.SIGNATURE) {
@@ -250,7 +250,7 @@ test('[DOCUMENT_AUTH]: should allow field signing when required for recipient au
     const signUrl = `/sign/${token}`;
 
     await page.goto(signUrl);
-    await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
     if (isAuthRequired) {
       for (const field of Field) {
@@ -287,7 +287,7 @@ test('[DOCUMENT_AUTH]: should allow field signing when required for recipient au
       await page.locator(`#field-${field.id}`).getByRole('button').click();
 
       if (field.type === FieldType.TEXT) {
-        await page.getByLabel('Custom Text').fill('TEXT');
+        await page.getByLabel('Custom text').fill('TEXT');
         await page.getByRole('button', { name: 'Save Text' }).click();
       }
 
@@ -361,7 +361,7 @@ test('[DOCUMENT_AUTH]: should allow field signing when required for recipient an
     const signUrl = `/sign/${token}`;
 
     await page.goto(signUrl);
-    await expect(page.getByRole('heading', { name: 'Sign Document' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sign document' })).toBeVisible();
 
     if (isAuthRequired) {
       for (const field of Field) {
@@ -398,7 +398,7 @@ test('[DOCUMENT_AUTH]: should allow field signing when required for recipient an
       await page.locator(`#field-${field.id}`).getByRole('button').click();
 
       if (field.type === FieldType.TEXT) {
-        await page.getByLabel('Custom Text').fill('TEXT');
+        await page.getByLabel('Custom text').fill('TEXT');
         await page.getByRole('button', { name: 'Save Text' }).click();
       }
 

@@ -162,7 +162,7 @@ export default async function CompletedSigningPage({
             ))}
 
           <div className="mt-8 flex w-full max-w-sm items-center justify-center gap-4">
-            <DocumentShareButton documentId={document.id} token={recipient.token} />
+            {/*<DocumentShareButton documentId={document.id} token={recipient.token} />*/}
 
             {document.status === DocumentStatus.COMPLETED ? (
               <DocumentDownloadButton
@@ -197,7 +197,7 @@ export default async function CompletedSigningPage({
 
         {isLoggedIn && (
           <Link href="/documents" className="text-documenso-700 hover:text-documenso-600 mt-36">
-            Go Back Home
+            Go back home
           </Link>
         )}
       </div>

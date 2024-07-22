@@ -67,7 +67,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) =>
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add signers
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   await page.getByLabel('Email*').fill('user1@example.com');
   await page.getByLabel('Name').fill('User 1');
@@ -75,9 +75,9 @@ test('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) =>
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add fields
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
 
-  await page.getByRole('button', { name: 'User 1 Signature' }).click();
+  await page.getByRole('button', { name: 'User 1 signature' }).click();
   await page.locator('canvas').click({
     position: {
       x: 100,
@@ -85,7 +85,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) =>
     },
   });
 
-  await page.getByRole('button', { name: 'Email Email' }).click();
+  await page.getByRole('button', { name: 'Email email' }).click();
   await page.locator('canvas').click({
     position: {
       x: 100,
@@ -96,7 +96,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document', async ({ page }) =>
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add subject and send
-  await expect(page.getByRole('heading', { name: 'Add Subject' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add subject' })).toBeVisible();
   await page.getByRole('button', { name: 'Send' }).click();
 
   await page.waitForURL('/documents');
@@ -129,21 +129,21 @@ test('[DOCUMENT_FLOW]: should be able to create a document with multiple recipie
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add signers
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   // Add 2 signers.
   await page.getByPlaceholder('Email').fill('user1@example.com');
   await page.getByPlaceholder('Name').fill('User 1');
-  await page.getByRole('button', { name: 'Add Signer' }).click();
+  await page.getByRole('button', { name: 'Add signer' }).click();
   await page.getByRole('textbox', { name: 'Email', exact: true }).fill('user2@example.com');
   await page.getByRole('textbox', { name: 'Name', exact: true }).nth(1).fill('User 2');
 
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add fields
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
 
-  await page.getByRole('button', { name: 'User 1 Signature' }).click();
+  await page.getByRole('button', { name: 'User 1 signature' }).click();
   await page.locator('canvas').click({
     position: {
       x: 100,
@@ -151,7 +151,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document with multiple recipie
     },
   });
 
-  await page.getByRole('button', { name: 'Email Email' }).click();
+  await page.getByRole('button', { name: 'Email email' }).click();
   await page.locator('canvas').click({
     position: {
       x: 100,
@@ -162,7 +162,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document with multiple recipie
   await page.getByText('User 1 (user1@example.com)').click();
   await page.getByText('User 2 (user2@example.com)').click();
 
-  await page.getByRole('button', { name: 'User 2 Signature' }).click();
+  await page.getByRole('button', { name: 'User 2 signature' }).click();
   await page.locator('canvas').click({
     position: {
       x: 500,
@@ -170,7 +170,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document with multiple recipie
     },
   });
 
-  await page.getByRole('button', { name: 'Email Email' }).click();
+  await page.getByRole('button', { name: 'Email email' }).click();
   await page.locator('canvas').click({
     position: {
       x: 500,
@@ -181,7 +181,7 @@ test('[DOCUMENT_FLOW]: should be able to create a document with multiple recipie
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add subject and send
-  await expect(page.getByRole('heading', { name: 'Add Subject' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add subject' })).toBeVisible();
   await page.getByRole('button', { name: 'Send' }).click();
 
   await page.waitForURL('/documents');
@@ -212,7 +212,7 @@ test('[DOCUMENT_FLOW]: should be able to create, send and sign a document', asyn
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add signers
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   await page.getByPlaceholder('Email').fill('user1@example.com');
   await page.getByPlaceholder('Name').fill('User 1');
@@ -220,11 +220,11 @@ test('[DOCUMENT_FLOW]: should be able to create, send and sign a document', asyn
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add fields
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add subject and send
-  await expect(page.getByRole('heading', { name: 'Add Subject' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add subject' })).toBeVisible();
   await page.getByRole('button', { name: 'Send' }).click();
 
   await page.waitForURL('/documents');
@@ -250,11 +250,11 @@ test('[DOCUMENT_FLOW]: should be able to create, send and sign a document', asyn
   expect(status).toBe(DocumentStatus.PENDING);
 
   await page.getByRole('button', { name: 'Complete' }).click();
-  await expect(page.getByRole('dialog').getByText('Complete Signing').first()).toBeVisible();
+  await expect(page.getByRole('dialog').getByText('Complete signing').first()).toBeVisible();
   await page.getByRole('button', { name: 'Sign' }).click();
 
   await page.waitForURL(`/sign/${token}/complete`);
-  await expect(page.getByText('Document Signed')).toBeVisible();
+  await expect(page.getByText('Document signed')).toBeVisible();
 
   // Check if document has been signed
   const { status: completedStatus } = await getDocumentByToken(token);
@@ -280,13 +280,13 @@ test('[DOCUMENT_FLOW]: should be able to create, send with redirect url, sign a 
   // Set title & advanced redirect
   await expect(page.getByRole('heading', { name: 'General' })).toBeVisible();
   await page.getByLabel('Title').fill(documentTitle);
-  await page.getByRole('button', { name: 'Advanced Options' }).click();
+  await page.getByRole('button', { name: 'Advanced options' }).click();
   await page.getByLabel('Redirect URL').fill('https://documenso.com');
 
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add signers
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   await page.getByPlaceholder('Email').fill('user1@example.com');
   await page.getByPlaceholder('Name').fill('User 1');
@@ -294,7 +294,7 @@ test('[DOCUMENT_FLOW]: should be able to create, send with redirect url, sign a 
   await page.getByRole('button', { name: 'Continue' }).click();
 
   // Add fields
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
   await page.getByRole('button', { name: 'Continue' }).click();
 
   await page.getByRole('button', { name: 'Send' }).click();
@@ -322,7 +322,7 @@ test('[DOCUMENT_FLOW]: should be able to create, send with redirect url, sign a 
   expect(status).toBe(DocumentStatus.PENDING);
 
   await page.getByRole('button', { name: 'Complete' }).click();
-  await expect(page.getByRole('dialog').getByText('Complete Signing').first()).toBeVisible();
+  await expect(page.getByRole('dialog').getByText('Complete signing').first()).toBeVisible();
   await page.getByRole('button', { name: 'Sign' }).click();
 
   await page.waitForURL('https://documenso.com');

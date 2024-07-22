@@ -68,7 +68,7 @@ export const DownloadAuditLogButton = ({ className, documentId }: DownloadAuditL
       onClick={() => void onDownloadAuditLogsClick()}
     >
       {!isLoading && <DownloadIcon className="mr-1.5 h-4 w-4" />}
-      Download Audit Logs
+      Download audit logs
     </Button>
   );
 };

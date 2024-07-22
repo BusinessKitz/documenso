@@ -61,7 +61,7 @@ test('[TEMPLATE]: should create a document from a template', async ({ page }) =>
   await page.getByLabel('Message (Optional)').fill('MESSAGE');
 
   // Set advanced options.
-  await page.getByRole('button', { name: 'Advanced Options' }).click();
+  await page.getByRole('button', { name: 'Advanced options' }).click();
   await page.locator('button').filter({ hasText: 'YYYY-MM-DD HH:mm a' }).click();
   await page.getByLabel('DD/MM/YYYY').click();
 
@@ -196,7 +196,7 @@ test('[TEMPLATE]: should create a team document from a team template', async ({ 
   await page.getByLabel('Message (Optional)').fill('MESSAGE');
 
   // Set advanced options.
-  await page.getByRole('button', { name: 'Advanced Options' }).click();
+  await page.getByRole('button', { name: 'Advanced options' }).click();
   await page.locator('button').filter({ hasText: 'YYYY-MM-DD HH:mm a' }).click();
   await page.getByLabel('DD/MM/YYYY').click();
 
