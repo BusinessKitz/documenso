@@ -41,7 +41,7 @@ test('[USER] can sign up with email and password', async ({ page }: { page: Page
 
   await page.goto(`/verify-email/${token}`);
 
-  await expect(page.getByRole('heading')).toContainText('Email Confirmed!');
+  await expect(page.getByRole('heading')).toContainText('Email confirmed!');
 
   await page.getByRole('link', { name: 'Go back home' }).click();
 

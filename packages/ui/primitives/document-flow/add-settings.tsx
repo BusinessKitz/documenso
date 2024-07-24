@@ -178,7 +178,7 @@ export const AddSettingsFormPartial = ({
             <Accordion type="multiple" className="mt-6">
               <AccordionItem value="advanced-options" className="border-none">
                 <AccordionTrigger className="text-foreground mb-2 rounded border px-3 py-2 text-left hover:bg-neutral-200/30 hover:no-underline">
-                  Advanced Options
+                  Advanced options
                 </AccordionTrigger>
 
                 <AccordionContent className="text-muted-foreground -mx-1 px-1 pt-2 text-sm leading-relaxed">
@@ -188,7 +188,7 @@ export const AddSettingsFormPartial = ({
                       name="meta.dateFormat"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date Format</FormLabel>
+                          <FormLabel>Date format</FormLabel>
 
                           <FormControl>
                             <Select
