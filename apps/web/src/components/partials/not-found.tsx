@@ -53,7 +53,7 @@ export default function NotFoundPartial({ children }: NotFoundPartialProps) {
               }}
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Go Back
+              Go back
             </Button>
 
             {children}

@@ -63,11 +63,11 @@ export const SinglePlayerModeSuccess = ({
       <div className="relative mt-8 w-full">
         <div className={cn('flex flex-col items-center', className)}>
           <div className="grid w-full max-w-sm grid-cols-2 gap-4">
-            <DocumentShareButton
+            {/*<DocumentShareButton
               documentId={document.id}
               token={document.Recipient[0].token}
               className="flex-1 bg-transparent backdrop-blur-sm"
-            />
+            />*/}
 
             <DocumentDownloadButton
               className="flex-1 bg-transparent backdrop-blur-sm"

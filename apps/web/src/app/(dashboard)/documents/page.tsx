@@ -18,7 +18,7 @@ export default async function DocumentsPage({ searchParams = {} }: DocumentsPage
   const { user } = await getRequiredServerComponentSession();
   return (
     <>
-      <UpcomingProfileClaimTeaser user={user} />
+      {/*<UpcomingProfileClaimTeaser user={user} />*/}
       <DocumentsPageView searchParams={searchParams} />
     </>
   );

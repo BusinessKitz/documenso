@@ -72,9 +72,9 @@ export const SignDialog = ({
       <DialogContent>
         <DialogTitle>
           <div className="text-foreground text-xl font-semibold">
-            {role === RecipientRole.VIEWER && 'Complete Viewing'}
-            {role === RecipientRole.SIGNER && 'Complete Signing'}
-            {role === RecipientRole.APPROVER && 'Complete Approval'}
+            {role === RecipientRole.VIEWER && 'Complete viewing'}
+            {role === RecipientRole.SIGNER && 'Complete signing'}
+            {role === RecipientRole.APPROVER && 'Complete approval'}
           </div>
         </DialogTitle>
 

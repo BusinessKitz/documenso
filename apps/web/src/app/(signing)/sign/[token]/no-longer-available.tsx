@@ -49,7 +49,7 @@ export const NoLongerAvailable = ({
 
         {session?.user ? (
           <Link href="/documents" className="text-documenso-700 hover:text-documenso-600 mt-36">
-            Go Back Home
+            Go back home
           </Link>
         ) : (
           <p className="text-muted-foreground/60 mt-36 text-sm">

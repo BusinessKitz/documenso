@@ -1,30 +1,30 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import {useMemo, useState } from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { DateTime } from 'luxon';
-import { useForm } from 'react-hook-form';
-import { match } from 'ts-pattern';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {DateTime} from 'luxon';
+import {useForm} from 'react-hook-form';
+import {match} from 'ts-pattern';
 
-import { DEFAULT_DOCUMENT_DATE_FORMAT } from '@documenso/lib/constants/date-formats';
-import { PDF_VIEWER_PAGE_SELECTOR } from '@documenso/lib/constants/pdf-viewer';
-import { sortFieldsByPosition, validateFieldsInserted } from '@documenso/lib/utils/fields';
-import type { Field } from '@documenso/prisma/client';
-import { FieldType } from '@documenso/prisma/client';
-import type { FieldWithSignature } from '@documenso/prisma/types/field-with-signature';
-import type { DocumentFlowStep } from '@documenso/ui/primitives/document-flow/types';
+import {DEFAULT_DOCUMENT_DATE_FORMAT} from '@documenso/lib/constants/date-formats';
+import {PDF_VIEWER_PAGE_SELECTOR} from '@documenso/lib/constants/pdf-viewer';
+import {sortFieldsByPosition, validateFieldsInserted} from '@documenso/lib/utils/fields';
+import type {Field} from '@documenso/prisma/client';
+import {FieldType} from '@documenso/prisma/client';
+import type {FieldWithSignature} from '@documenso/prisma/types/field-with-signature';
+import type {DocumentFlowStep} from '@documenso/ui/primitives/document-flow/types';
 
-import { FieldToolTip } from '../../components/field/field-tooltip';
-import { cn } from '../../lib/utils';
-import { Card, CardContent } from '../card';
-import { ElementVisible } from '../element-visible';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../form/form';
-import { Input } from '../input';
-import { SignaturePad } from '../signature-pad';
-import { useStep } from '../stepper';
-import type { TAddSignatureFormSchema } from './add-signature.types';
-import { ZAddSignatureFormSchema } from './add-signature.types';
+import {FieldToolTip} from '../../components/field/field-tooltip';
+import {cn} from '../../lib/utils';
+import {Card, CardContent} from '../card';
+import {ElementVisible} from '../element-visible';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '../form/form';
+import {Input} from '../input';
+import {SignaturePad} from '../signature-pad';
+import {useStep} from '../stepper';
+import type {TAddSignatureFormSchema} from './add-signature.types';
+import {ZAddSignatureFormSchema} from './add-signature.types';
 import {
   DocumentFlowFormContainerActions,
   DocumentFlowFormContainerContent,
@@ -49,16 +49,16 @@ export type AddSignatureFormProps = {
 };
 
 export const AddSignatureFormPartial = ({
-  defaultValues,
-  documentFlow,
-  fields,
+                                          defaultValues,
+                                          documentFlow,
+                                          fields,
 
-  onSubmit,
-  requireName = false,
-  requireCustomText = false,
-  requireSignature = true,
-}: AddSignatureFormProps) => {
-  const { currentStep, totalSteps } = useStep();
+                                          onSubmit,
+                                          requireName = false,
+                                          requireCustomText = false,
+                                          requireSignature = true,
+                                        }: AddSignatureFormProps) => {
+  const {currentStep, totalSteps} = useStep();
 
   const [validateUninsertedFields, setValidateUninsertedFields] = useState(false);
 
@@ -246,7 +246,7 @@ export const AddSignatureFormPartial = ({
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel required>Email</FormLabel>
                     <FormControl>
@@ -261,7 +261,7 @@ export const AddSignatureFormPartial = ({
                         }}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -270,7 +270,7 @@ export const AddSignatureFormPartial = ({
                 <FormField
                   control={form.control}
                   name="name"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel required={requireName}>Name</FormLabel>
                       <FormControl>
@@ -283,7 +283,7 @@ export const AddSignatureFormPartial = ({
                           }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage/>
                     </FormItem>
                   )}
                 />
@@ -293,14 +293,14 @@ export const AddSignatureFormPartial = ({
                 <FormField
                   control={form.control}
                   name="signature"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel required={requireSignature}>Signature</FormLabel>
                       <FormControl>
                         <Card
                           className={cn('mt-2', {
                             'rounded-sm ring-2 ring-red-500 ring-offset-2 transition-all':
-                              form.formState.errors.signature,
+                            form.formState.errors.signature,
                           })}
                           gradient={!form.formState.errors.signature}
                           degrees={-120}
@@ -318,7 +318,7 @@ export const AddSignatureFormPartial = ({
                           </CardContent>
                         </Card>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage/>
                     </FormItem>
                   )}
                 />
@@ -328,9 +328,9 @@ export const AddSignatureFormPartial = ({
                 <FormField
                   control={form.control}
                   name="customText"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
-                      <FormLabel required={requireCustomText}>Custom Text</FormLabel>
+                      <FormLabel required={requireCustomText}>Custom text</FormLabel>
                       <FormControl>
                         <Input
                           className="bg-background"
@@ -341,7 +341,7 @@ export const AddSignatureFormPartial = ({
                           }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage/>
                     </FormItem>
                   )}
                 />
