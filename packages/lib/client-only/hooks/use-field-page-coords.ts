@@ -55,6 +55,10 @@ export const useFieldPageCoords = (field: Field) => {
   }, [calculateCoords]);
 
   useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, []);
+
+  useEffect(() => {
     const $page = document.querySelector<HTMLElement>(
       `${PDF_VIEWER_PAGE_SELECTOR}[data-page-number="${field.page}"]`,
     );
