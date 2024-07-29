@@ -66,11 +66,12 @@ img[src*="background-pattern"], img[src*="signing-celebration"] {
   display: none;
 }
 
-[data-radix-popper-content-wrapper][style*="transform: translate(0px"] .field-tooltip {
-  visibility: hidden;
+
+#document-flow-form-container label {
+  display: block;
+  text-transform: lowercase;
 }
 
-
-
-
-
+#document-flow-form-container label:first-letter {
+  text-transform: uppercase;
+}
