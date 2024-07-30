@@ -42,7 +42,7 @@ export const LocaleDate = ({ className, date, format, ...props }: LocaleDateProp
   }, [date, format, formatDateTime]);
 
   return (
-    <span className={className} {...props}>
+    <span suppressHydrationWarning className={className} {...props}>
       {localeDate}
     </span>
   );

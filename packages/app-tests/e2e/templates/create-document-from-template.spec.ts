@@ -56,9 +56,9 @@ test('[TEMPLATE]: should create a document from a template', async ({ page }) =>
   }
 
   // Set email options.
-  await page.getByRole('button', { name: 'Email Options' }).click();
-  await page.getByLabel('Subject (Optional)').fill('SUBJECT');
-  await page.getByLabel('Message (Optional)').fill('MESSAGE');
+  await page.getByRole('button', { name: 'Email options' }).click();
+  await page.getByLabel('Subject (optional)').fill('SUBJECT');
+  await page.getByLabel('Message (optional)').fill('MESSAGE');
 
   // Set advanced options.
   await page.getByRole('button', { name: 'Advanced options' }).click();
@@ -70,12 +70,12 @@ test('[TEMPLATE]: should create a document from a template', async ({ page }) =>
   await page.getByLabel('Redirect URL').fill('https://documenso.com');
   await page.getByRole('button', { name: 'Continue' }).click();
 
-  await expect(page.getByRole('heading', { name: 'Add Placeholder' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add placeholder' })).toBeVisible();
 
   // Add 2 signers.
   await page.getByPlaceholder('Email').fill('recipient1@documenso.com');
   await page.getByPlaceholder('Name').fill('Recipient 1');
-  await page.getByRole('button', { name: 'Add Placeholder Recipient' }).click();
+  await page.getByRole('button', { name: 'Add placeholder recipient' }).click();
   await page.getByRole('textbox', { name: 'Email', exact: true }).fill('recipient2@documenso.com');
   await page.getByRole('textbox', { name: 'Name', exact: true }).nth(1).fill('Recipient 2');
 
@@ -192,8 +192,8 @@ test('[TEMPLATE]: should create a team document from a team template', async ({ 
 
   // Set email options.
   await page.getByRole('button', { name: 'Email Options' }).click();
-  await page.getByLabel('Subject (Optional)').fill('SUBJECT');
-  await page.getByLabel('Message (Optional)').fill('MESSAGE');
+  await page.getByLabel('Subject (optional)').fill('SUBJECT');
+  await page.getByLabel('Message (optional)').fill('MESSAGE');
 
   // Set advanced options.
   await page.getByRole('button', { name: 'Advanced options' }).click();
@@ -205,12 +205,12 @@ test('[TEMPLATE]: should create a team document from a team template', async ({ 
   await page.getByLabel('Redirect URL').fill('https://documenso.com');
   await page.getByRole('button', { name: 'Continue' }).click();
 
-  await expect(page.getByRole('heading', { name: 'Add Placeholder' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add placeholder' })).toBeVisible();
 
   // Add 2 signers.
   await page.getByPlaceholder('Email').fill('recipient1@documenso.com');
   await page.getByPlaceholder('Name').fill('Recipient 1');
-  await page.getByRole('button', { name: 'Add Placeholder Recipient' }).click();
+  await page.getByRole('button', { name: 'Add placeholder recipient' }).click();
   await page.getByRole('textbox', { name: 'Email', exact: true }).fill('recipient2@documenso.com');
   await page.getByRole('textbox', { name: 'Name', exact: true }).nth(1).fill('Recipient 2');
 
@@ -222,7 +222,7 @@ test('[TEMPLATE]: should create a team document from a team template', async ({ 
   }
 
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Save template' }).click();
 
