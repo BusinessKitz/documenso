@@ -43,7 +43,7 @@ export const StackAvatarsWithTooltip = ({
     <PopoverHover
       trigger={children || <StackAvatars recipients={recipients} />}
       contentProps={{
-        className: 'flex flex-col gap-y-5 py-2',
+        className: 'flex flex-col gap-y-5 py-2 popover-documents-statuses',
         side: position,
       }}
     >
