@@ -155,7 +155,7 @@ export const TextField = ({ field, recipient }: TextFieldProps) => {
           </DialogTitle>
 
           <div className="">
-            <Label htmlFor="custom-text">Custom Text</Label>
+            <Label htmlFor="custom-text">Custom text</Label>
 
             <Input
               id="custom-text"

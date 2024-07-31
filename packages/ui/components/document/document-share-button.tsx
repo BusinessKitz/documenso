@@ -123,7 +123,7 @@ export const DocumentShareButton = ({
             loading={isLoading}
           >
             {!isLoading && <Sparkles className="mr-2 h-5 w-5" />}
-            Share Signature Card
+            Share signature card
           </Button>
         )}
       </DialogTrigger>

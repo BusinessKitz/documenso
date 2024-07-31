@@ -45,7 +45,7 @@ test.describe('[EE_ONLY]', () => {
     await expect(page.getByRole('heading', { name: 'Add Placeholders' })).toBeVisible();
 
     // Return to the settings step to check that the results are saved correctly.
-    await page.getByRole('button', { name: 'Go Back' }).click();
+    await page.getByRole('button', { name: 'Go back' }).click();
     await expect(page.getByRole('heading', { name: 'General' })).toBeVisible();
 
     await expect(page.getByTestId('documentActionSelectValue')).toContainText('Require passkey');
@@ -157,7 +157,7 @@ test('[TEMPLATE_FLOW]: add settings', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Add Placeholders' })).toBeVisible();
 
   // Return to the settings step to check that the results are saved correctly.
-  await page.getByRole('button', { name: 'Go Back' }).click();
+  await page.getByRole('button', { name: 'Go back' }).click();
   await expect(page.getByRole('heading', { name: 'General' })).toBeVisible();
 
   await expect(page.getByLabel('Title')).toHaveValue('New Title');

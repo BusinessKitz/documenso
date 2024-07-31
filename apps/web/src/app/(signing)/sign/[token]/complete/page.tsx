@@ -90,7 +90,7 @@ export default async function CompletedSigningPage({
   return (
     <div
       className={cn(
-        '-mx-4 flex flex-col items-center overflow-x-hidden px-4 pt-24 md:-mx-8 md:px-8 lg:pt-36 xl:pt-44',
+        '-mx-4 flex flex-col items-center px-4  md:-mx-8 md:px-8',
         { 'pt-0 lg:pt-0 xl:pt-0': canSignUp },
       )}
     >
@@ -118,9 +118,9 @@ export default async function CompletedSigningPage({
 
           <h2 className="mt-6 max-w-[35ch] text-center text-2xl font-semibold leading-normal md:text-3xl lg:text-4xl">
             Document
-            {recipient.role === RecipientRole.SIGNER && ' Signed '}
-            {recipient.role === RecipientRole.VIEWER && ' Viewed '}
-            {recipient.role === RecipientRole.APPROVER && ' Approved '}
+            {recipient.role === RecipientRole.SIGNER && ' signed '}
+            {recipient.role === RecipientRole.VIEWER && ' viewed '}
+            {recipient.role === RecipientRole.APPROVER && ' approved '}
           </h2>
 
           {match({ status: document.status, deletedAt: document.deletedAt })
@@ -146,12 +146,12 @@ export default async function CompletedSigningPage({
           {match({ status: document.status, deletedAt: document.deletedAt })
             .with({ status: DocumentStatus.COMPLETED }, () => (
               <p className="text-muted-foreground/60 mt-2.5 max-w-[60ch] text-center text-sm font-medium md:text-base">
-                Everyone has signed! You will receive an Email copy of the signed document.
+                Everyone has signed! You will receive an email copy of the signed document.
               </p>
             ))
             .with({ deletedAt: null }, () => (
               <p className="text-muted-foreground/60 mt-2.5 max-w-[60ch] text-center text-sm font-medium md:text-base">
-                You will receive an Email copy of the signed document once everyone has signed.
+                You will receive an email copy of the signed document once everyone has signed.
               </p>
             ))
             .otherwise(() => (
@@ -162,7 +162,7 @@ export default async function CompletedSigningPage({
             ))}
 
           <div className="mt-8 flex w-full max-w-sm items-center justify-center gap-4">
-            <DocumentShareButton documentId={document.id} token={recipient.token} />
+            {/*<DocumentShareButton documentId={document.id} token={recipient.token} />*/}
 
             {document.status === DocumentStatus.COMPLETED ? (
               <DocumentDownloadButton
@@ -197,7 +197,7 @@ export default async function CompletedSigningPage({
 
         {isLoggedIn && (
           <Link href="/documents" className="text-documenso-700 hover:text-documenso-600 mt-36">
-            Go Back Home
+            Go back home
           </Link>
         )}
       </div>

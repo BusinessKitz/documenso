@@ -161,7 +161,7 @@ export const DataTableActionDropdown = ({ row, team }: DataTableActionDropdownPr
         <DropdownMenuItem asChild>
           <Link href={`${documentsPath}/${row.id}/logs`}>
             <ScrollTextIcon className="mr-2 h-4 w-4" />
-            Audit Log
+            Audit log
           </Link>
         </DropdownMenuItem>
 
@@ -181,7 +181,7 @@ export const DataTableActionDropdown = ({ row, team }: DataTableActionDropdownPr
           {canManageDocument ? 'Delete' : 'Hide'}
         </DropdownMenuItem>
 
-        <DropdownMenuLabel>Share</DropdownMenuLabel>
+        {/*<DropdownMenuLabel>Share</DropdownMenuLabel>
 
         <ResendDocumentActionItem document={row} recipients={nonSignedRecipients} team={team} />
 
@@ -192,11 +192,11 @@ export const DataTableActionDropdown = ({ row, team }: DataTableActionDropdownPr
             <DropdownMenuItem disabled={disabled || isDraft} onSelect={(e) => e.preventDefault()}>
               <div className="flex items-center">
                 {loading ? <Loader className="mr-2 h-4 w-4" /> : <Share className="mr-2 h-4 w-4" />}
-                Share Signing Card
+                Share signing card
               </div>
             </DropdownMenuItem>
           )}
-        />
+        />*/}
 
       </DropdownMenuContent>
 

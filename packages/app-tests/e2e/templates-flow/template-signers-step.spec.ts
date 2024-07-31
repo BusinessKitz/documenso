@@ -52,8 +52,8 @@ test.describe('[EE_ONLY]', () => {
 
     // Navigate to the next step and back.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
-    await page.getByRole('button', { name: 'Go Back' }).click();
+    await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
+    await page.getByRole('button', { name: 'Go back' }).click();
     await expect(page.getByRole('heading', { name: 'Add Placeholder' })).toBeVisible();
 
     // Expect that the advanced settings is unchecked, since no advanced settings were applied.
@@ -66,8 +66,8 @@ test.describe('[EE_ONLY]', () => {
 
     // Navigate to the next step and back.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
-    await page.getByRole('button', { name: 'Go Back' }).click();
+    await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
+    await page.getByRole('button', { name: 'Go back' }).click();
     await expect(page.getByRole('heading', { name: 'Add Placeholder' })).toBeVisible();
 
     // Expect that the advanced settings is visible, and the checkbox is hidden. Since advanced

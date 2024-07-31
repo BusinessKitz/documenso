@@ -130,17 +130,17 @@ export const EditDocumentForm = ({
       stepIndex: 1,
     },
     signers: {
-      title: 'Add Signers',
+      title: 'Add signers',
       description: 'Add the people who will sign the document.',
       stepIndex: 2,
     },
     fields: {
-      title: 'Add Fields',
+      title: 'Add fields',
       description: 'Add all relevant fields for each recipient.',
       stepIndex: 3,
     },
     subject: {
-      title: 'Add Subject',
+      title: 'Add subject',
       description: 'Add the subject and message you wish to send to signers.',
       stepIndex: 4,
     },
