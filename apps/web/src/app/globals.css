@@ -67,6 +67,21 @@ img[src*="background-pattern"], img[src*="signing-celebration"] {
 }
 
 
+#document-flow-form-container label {
+  display: block;
+  text-transform: lowercase;
+}
 
+#document-flow-form-container label:first-letter {
+  text-transform: uppercase;
+}
 
+.document-dropzone {
+  height: 256px !important;
+}
 
+.popover-documents-statuses {
+  width: auto !important;
+  min-width: 320px !important;
+  max-height: inherit !important;
+}

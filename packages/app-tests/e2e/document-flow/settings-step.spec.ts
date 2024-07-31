@@ -46,10 +46,10 @@ test.describe('[EE_ONLY]', () => {
 
     // Save the settings by going to the next step.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
     // Return to the settings step to check that the results are saved correctly.
-    await page.getByRole('button', { name: 'Go Back' }).click();
+    await page.getByRole('button', { name: 'Go back' }).click();
     await expect(page.getByRole('heading', { name: 'General' })).toBeVisible();
 
     await expect(page.getByTestId('documentActionSelectValue')).toContainText('Require passkey');
@@ -90,7 +90,7 @@ test.describe('[EE_ONLY]', () => {
 
     // Save the settings by going to the next step.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
     // Advanced settings should be visible.
     await expect(page.getByLabel('Show advanced settings')).toBeVisible();
@@ -126,7 +126,7 @@ test.describe('[EE_ONLY]', () => {
 
     // Next step.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
     // Advanced settings should not be visible.
     await expect(page.getByLabel('Show advanced settings')).not.toBeVisible();
@@ -158,10 +158,10 @@ test('[DOCUMENT_FLOW]: add settings', async ({ page }) => {
 
   // Save the settings by going to the next step.
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   // Return to the settings step to check that the results are saved correctly.
-  await page.getByRole('button', { name: 'Go Back' }).click();
+  await page.getByRole('button', { name: 'Go back' }).click();
   await expect(page.getByRole('heading', { name: 'General' })).toBeVisible();
 
   await expect(page.getByLabel('Title')).toHaveValue('New Title');

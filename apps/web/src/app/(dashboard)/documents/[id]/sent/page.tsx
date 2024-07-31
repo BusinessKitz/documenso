@@ -11,7 +11,7 @@ export default function DocumentSentPage() {
       </Link>
 
       <h1 className="mt-4 grow-0 truncate text-2xl font-semibold md:text-3xl">
-        Loading Document...
+        Loading document...
       </h1>
     </div>
   );

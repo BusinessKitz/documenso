@@ -76,7 +76,7 @@ export const DownloadCertificateButton = ({
       onClick={() => void onDownloadCertificatesClick()}
     >
       {!isLoading && <DownloadIcon className="mr-1.5 h-4 w-4" />}
-      Download Certificate
+      Download certificate
     </Button>
   );
 };

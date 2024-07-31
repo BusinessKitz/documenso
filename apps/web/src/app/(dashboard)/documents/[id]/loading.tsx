@@ -13,7 +13,7 @@ export default function Loading() {
       </Link>
 
       <h1 className="mt-4 grow-0 truncate text-2xl font-semibold md:text-3xl">
-        Loading Document...
+        Loading document...
       </h1>
 
       <div className="flex h-10 items-center">

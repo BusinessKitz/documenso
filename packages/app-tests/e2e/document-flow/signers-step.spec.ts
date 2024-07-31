@@ -36,12 +36,12 @@ test.describe('[EE_ONLY]', () => {
 
     // Save the settings by going to the next step.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
     // Add 2 signers.
     await page.getByPlaceholder('Email').fill('recipient1@documenso.com');
     await page.getByPlaceholder('Name').fill('Recipient 1');
-    await page.getByRole('button', { name: 'Add Signer' }).click();
+    await page.getByRole('button', { name: 'Add signer' }).click();
     await page
       .getByRole('textbox', { name: 'Email', exact: true })
       .fill('recipient2@documenso.com');
@@ -52,9 +52,9 @@ test.describe('[EE_ONLY]', () => {
 
     // Navigate to the next step and back.
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
-    await page.getByRole('button', { name: 'Go Back' }).click();
-    await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
+    await page.getByRole('button', { name: 'Go back' }).click();
+    await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
     // Todo: Fix stepper component back issue before finishing test.
 
@@ -74,12 +74,12 @@ test('[DOCUMENT_FLOW]: add signers', async ({ page }) => {
 
   // Save the settings by going to the next step.
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   // Add 2 signers.
   await page.getByPlaceholder('Email').fill('recipient1@documenso.com');
   await page.getByPlaceholder('Name').fill('Recipient 1');
-  await page.getByRole('button', { name: 'Add Signer' }).click();
+  await page.getByRole('button', { name: 'Add signer' }).click();
   await page.getByRole('textbox', { name: 'Email', exact: true }).fill('recipient2@documenso.com');
   await page.getByRole('textbox', { name: 'Name', exact: true }).nth(1).fill('Recipient 2');
 
@@ -88,9 +88,9 @@ test('[DOCUMENT_FLOW]: add signers', async ({ page }) => {
 
   // Navigate to the next step and back.
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'Add Fields' })).toBeVisible();
-  await page.getByRole('button', { name: 'Go Back' }).click();
-  await expect(page.getByRole('heading', { name: 'Add Signers' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Add fields' })).toBeVisible();
+  await page.getByRole('button', { name: 'Go back' }).click();
+  await expect(page.getByRole('heading', { name: 'Add signers' })).toBeVisible();
 
   await unseedUser(user.id);
 });

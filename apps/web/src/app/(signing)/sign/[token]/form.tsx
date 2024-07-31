@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -115,9 +115,9 @@ export const SigningForm = ({ document, recipient, fields, redirectUrl }: Signin
       >
         <div className={cn('flex flex-1 flex-col')}>
           <h3 className="text-foreground text-2xl font-semibold">
-            {recipient.role === RecipientRole.VIEWER && 'View Document'}
-            {recipient.role === RecipientRole.SIGNER && 'Sign Document'}
-            {recipient.role === RecipientRole.APPROVER && 'Approve Document'}
+            {recipient.role === RecipientRole.VIEWER && 'View document'}
+            {recipient.role === RecipientRole.SIGNER && 'Sign document'}
+            {recipient.role === RecipientRole.APPROVER && 'Approve document'}
           </h3>
 
           {recipient.role === RecipientRole.VIEWER ? (

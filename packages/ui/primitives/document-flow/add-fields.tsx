@@ -573,7 +573,7 @@ export const AddFieldsFormPartial = ({
                       {'Text'}
                     </p>
 
-                    <p className="text-muted-foreground mt-2 text-xs">Custom Text</p>
+                    <p className="text-muted-foreground mt-2 text-xs">Custom text</p>
                   </CardContent>
                 </Card>
               </button>
