@@ -166,7 +166,7 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
           )}
       </div>
 
-      {isLoading || isAuthLoading && (
+      {(isLoading || isAuthLoading) && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-white opacity-50"
           style={{zIndex: 100}}
