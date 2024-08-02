@@ -6,8 +6,12 @@ header {
   visibility: hidden;
 }
 
-a[href="/documents"] {
+header a[href="/documents"] {
   display: none;
+}
+
+a[href="/documents"] {
+  /*display: none;*/
 }
 
 [style="transform: none;"] {
@@ -77,11 +81,15 @@ img[src*="background-pattern"], img[src*="signing-celebration"] {
 }
 
 .document-dropzone {
-  height: 256px !important;
+  height: 265px !important;
 }
 
 .popover-documents-statuses {
   width: auto !important;
   min-width: 320px !important;
   max-height: inherit !important;
+}
+
+#document-flow-form-container {
+  top: 10px !important;
 }
