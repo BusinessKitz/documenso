@@ -38,7 +38,8 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
 
   const {quota, remaining} = useLimits();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const {mutateAsync: createDocument} = trpc.document.createDocument.useMutation();
 
@@ -133,14 +134,14 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
               signOut().catch(() => {
               });
             } else {
-              setIsLoading(false);
+              setIsAuthLoading(false);
             }
           }
         },
         false,
       );
     } else {
-      setIsLoading(false);
+      setIsAuthLoading(false);
     }
 
   }, [])
@@ -165,7 +166,7 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
           )}
       </div>
 
-      {isLoading && (
+      {isLoading || isAuthLoading && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-white opacity-50"
           style={{zIndex: 100}}
