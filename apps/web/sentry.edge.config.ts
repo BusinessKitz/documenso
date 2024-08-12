@@ -8,7 +8,7 @@ import { env } from 'next-runtime-env';
 Sentry.init({
   dsn: env('SENTRY_DSN'),
 
-  enabled: env('SENTRY_ENABLED'),
+  enabled: env('SENTRY_ENABLED') === 'true',
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
