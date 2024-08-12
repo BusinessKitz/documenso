@@ -8,7 +8,7 @@ import { env } from 'next-runtime-env';
 Sentry.init({
   dsn: env('SENTRY_DSN'),
 
-  enabled: ['production', 'staging'].includes(process.env.NODE_ENV),
+  enabled: env('SENTRY_ENABLED'),
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
