@@ -340,6 +340,7 @@ export const AddSignersFormPartial = ({
               </Button>
               <Button
                 type="button"
+                className="flex-1"
                 disabled={isSubmitting || signers.length >= remaining.recipients}
                 onClick={() => onAddSigner()}
               >
