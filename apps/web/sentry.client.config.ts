@@ -9,7 +9,7 @@ Sentry.init({
 
   enabled: env('SENTRY_ENABLED') === 'true',
 
-  environment: process.env.NODE_ENV,
+  environment: env('SENTRY_ENV'),
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
