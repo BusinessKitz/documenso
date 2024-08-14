@@ -2,14 +2,13 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from '@sentry/nextjs';
-import { env } from 'next-runtime-env';
 
 Sentry.init({
-  dsn: env('SENTRY_DSN'),
+  dsn: process.env.SENTRY_DSN,
 
-  enabled: env('SENTRY_ENABLED') === 'true',
+  enabled: process.env.SENTRY_ENABLED === 'true',
 
-  environment: env('SENTRY_ENV'),
+  environment: process.env.SENTRY_ENV,
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
