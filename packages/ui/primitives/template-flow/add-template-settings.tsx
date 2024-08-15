@@ -129,7 +129,7 @@ export const AddTemplateSettingsFormPartial = ({
               )}
             />
 
-            <FormField
+            {/*<FormField
               control={form.control}
               name="globalAccessAuth"
               render={({ field }) => (
@@ -144,7 +144,7 @@ export const AddTemplateSettingsFormPartial = ({
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />*/}
 
             {isEnterprise && (
               <FormField
