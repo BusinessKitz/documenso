@@ -1,32 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 
 import {
   DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
   SKIP_QUERY_BATCH_META,
 } from '@documenso/lib/constants/trpc';
-import type { DocumentWithDetails } from '@documenso/prisma/types/document';
-import { trpc } from '@documenso/trpc/react';
-import { cn } from '@documenso/ui/lib/utils';
-import { Card, CardContent } from '@documenso/ui/primitives/card';
-import { AddFieldsFormPartial } from '@documenso/ui/primitives/document-flow/add-fields';
-import type { TAddFieldsFormSchema } from '@documenso/ui/primitives/document-flow/add-fields.types';
-import { AddSettingsFormPartial } from '@documenso/ui/primitives/document-flow/add-settings';
-import type { TAddSettingsFormSchema } from '@documenso/ui/primitives/document-flow/add-settings.types';
-import { AddSignersFormPartial } from '@documenso/ui/primitives/document-flow/add-signers';
-import type { TAddSignersFormSchema } from '@documenso/ui/primitives/document-flow/add-signers.types';
-import { AddSubjectFormPartial } from '@documenso/ui/primitives/document-flow/add-subject';
-import type { TAddSubjectFormSchema } from '@documenso/ui/primitives/document-flow/add-subject.types';
-import { DocumentFlowFormContainer } from '@documenso/ui/primitives/document-flow/document-flow-root';
-import type { DocumentFlowStep } from '@documenso/ui/primitives/document-flow/types';
-import { LazyPDFViewer } from '@documenso/ui/primitives/lazy-pdf-viewer';
-import { Stepper } from '@documenso/ui/primitives/stepper';
-import { useToast } from '@documenso/ui/primitives/use-toast';
+import type {DocumentWithDetails} from '@documenso/prisma/types/document';
+import {trpc} from '@documenso/trpc/react';
+import {cn} from '@documenso/ui/lib/utils';
+import {Card, CardContent} from '@documenso/ui/primitives/card';
+import {AddFieldsFormPartial} from '@documenso/ui/primitives/document-flow/add-fields';
+import type {TAddFieldsFormSchema} from '@documenso/ui/primitives/document-flow/add-fields.types';
+import {AddSettingsFormPartial} from '@documenso/ui/primitives/document-flow/add-settings';
+import type {TAddSettingsFormSchema} from '@documenso/ui/primitives/document-flow/add-settings.types';
+import {AddSignersFormPartial} from '@documenso/ui/primitives/document-flow/add-signers';
+import type {TAddSignersFormSchema} from '@documenso/ui/primitives/document-flow/add-signers.types';
+import {AddSubjectFormPartial} from '@documenso/ui/primitives/document-flow/add-subject';
+import type {TAddSubjectFormSchema} from '@documenso/ui/primitives/document-flow/add-subject.types';
+import {DocumentFlowFormContainer} from '@documenso/ui/primitives/document-flow/document-flow-root';
+import type {DocumentFlowStep} from '@documenso/ui/primitives/document-flow/types';
+import {LazyPDFViewer} from '@documenso/ui/primitives/lazy-pdf-viewer';
+import {Stepper} from '@documenso/ui/primitives/stepper';
+import {useToast} from '@documenso/ui/primitives/use-toast';
 
-import { useOptionalCurrentTeam } from '~/providers/team';
+import {useOptionalCurrentTeam} from '~/providers/team';
 
 export type EditDocumentFormProps = {
   className?: string;
@@ -39,12 +39,12 @@ type EditDocumentStep = 'settings' | 'signers' | 'fields' | 'subject';
 const EditDocumentSteps: EditDocumentStep[] = ['settings', 'signers', 'fields', 'subject'];
 
 export const EditDocumentForm = ({
-  className,
-  initialDocument,
-  documentRootPath,
-  isDocumentEnterprise,
-}: EditDocumentFormProps) => {
-  const { toast } = useToast();
+                                   className,
+                                   initialDocument,
+                                   documentRootPath,
+                                   isDocumentEnterprise,
+                                 }: EditDocumentFormProps) => {
+  const {toast} = useToast();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,7 +54,7 @@ export const EditDocumentForm = ({
 
   const utils = trpc.useUtils();
 
-  const { data: document, refetch: refetchDocument } =
+  const {data: document, refetch: refetchDocument} =
     trpc.document.getDocumentWithDetailsById.useQuery(
       {
         id: initialDocument.id,
@@ -66,9 +66,9 @@ export const EditDocumentForm = ({
       },
     );
 
-  const { Recipient: recipients, Field: fields } = document;
+  const {Recipient: recipients, Field: fields} = document;
 
-  const { mutateAsync: setSettingsForDocument } = trpc.document.setSettingsForDocument.useMutation({
+  const {mutateAsync: setSettingsForDocument} = trpc.document.setSettingsForDocument.useMutation({
     ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
     onSuccess: (newData) => {
       utils.document.getDocumentWithDetailsById.setData(
@@ -76,12 +76,12 @@ export const EditDocumentForm = ({
           id: initialDocument.id,
           teamId: team?.id,
         },
-        (oldData) => ({ ...(oldData || initialDocument), ...newData }),
+        (oldData) => ({...(oldData || initialDocument), ...newData}),
       );
     },
   });
 
-  const { mutateAsync: addFields } = trpc.field.addFields.useMutation({
+  const {mutateAsync: addFields} = trpc.field.addFields.useMutation({
     ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
     onSuccess: (newFields) => {
       utils.document.getDocumentWithDetailsById.setData(
@@ -89,12 +89,12 @@ export const EditDocumentForm = ({
           id: initialDocument.id,
           teamId: team?.id,
         },
-        (oldData) => ({ ...(oldData || initialDocument), Field: newFields }),
+        (oldData) => ({...(oldData || initialDocument), Field: newFields}),
       );
     },
   });
 
-  const { mutateAsync: addSigners } = trpc.recipient.addSigners.useMutation({
+  const {mutateAsync: addSigners} = trpc.recipient.addSigners.useMutation({
     ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
     onSuccess: (newRecipients) => {
       utils.document.getDocumentWithDetailsById.setData(
@@ -102,12 +102,12 @@ export const EditDocumentForm = ({
           id: initialDocument.id,
           teamId: team?.id,
         },
-        (oldData) => ({ ...(oldData || initialDocument), Recipient: newRecipients }),
+        (oldData) => ({...(oldData || initialDocument), Recipient: newRecipients}),
       );
     },
   });
 
-  const { mutateAsync: sendDocument } = trpc.document.sendDocument.useMutation({
+  const {mutateAsync: sendDocument} = trpc.document.sendDocument.useMutation({
     ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
     onSuccess: (newData) => {
       utils.document.getDocumentWithDetailsById.setData(
@@ -115,33 +115,33 @@ export const EditDocumentForm = ({
           id: initialDocument.id,
           teamId: team?.id,
         },
-        (oldData) => ({ ...(oldData || initialDocument), ...newData }),
+        (oldData) => ({...(oldData || initialDocument), ...newData}),
       );
     },
   });
 
-  const { mutateAsync: setPasswordForDocument } =
+  const {mutateAsync: setPasswordForDocument} =
     trpc.document.setPasswordForDocument.useMutation();
 
   const documentFlow: Record<EditDocumentStep, DocumentFlowStep> = {
     settings: {
-      title: 'General',
-      description: 'Configure general settings for the document.',
+      title: 'Document details',
+      description: 'First, let\'s complete the document basics.',
       stepIndex: 1,
     },
     signers: {
       title: 'Add signers',
-      description: 'Add the people who will sign the document.',
+      description: 'Include the parties who will sign, view or approve the document below. All parties will sign the document via an email link for identification.',
       stepIndex: 2,
     },
     fields: {
-      title: 'Add fields',
-      description: 'Add all relevant fields for each recipient.',
+      title: 'Add signers details',
+      description: 'Drag & drop relevant fields into the document (signature, email, name, date, text) using the dropdown menu for each party, prior to sending the document for signing.',
       stepIndex: 3,
     },
     subject: {
-      title: 'Add subject',
-      description: 'Add the subject and message you wish to send to signers.',
+      title: 'It\'s time to send the document to all signers',
+      description: 'All signers will receive the document via an email link for signing. The account holder can sign directly in the application.\nAdd a custom subject and message if you wish.\nOnce the document has been signed, all parties will receive notifications via email. A copy of the signed document will also be saved in the platform.',
       stepIndex: 4,
     },
   };
@@ -165,7 +165,7 @@ export const EditDocumentForm = ({
 
   const onAddSettingsFormSubmit = async (data: TAddSettingsFormSchema) => {
     try {
-      const { timezone, dateFormat, redirectUrl } = data.meta;
+      const {timezone, dateFormat, redirectUrl} = data.meta;
 
       await setSettingsForDocument({
         documentId: document.id,
@@ -247,7 +247,7 @@ export const EditDocumentForm = ({
   };
 
   const onAddSubjectFormSubmit = async (data: TAddSubjectFormSchema) => {
-    const { subject, message } = data.meta;
+    const {subject, message} = data.meta;
 
     try {
       await sendDocument({
