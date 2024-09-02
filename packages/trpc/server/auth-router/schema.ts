@@ -6,7 +6,7 @@ import { ZRegistrationResponseJSONSchema } from '@documenso/lib/types/webauthn';
 export const ZCurrentPasswordSchema = z
   .string()
   .min(6, { message: 'Must be at least 6 characters in length' })
-  .max(72);
+  .max(100000000000000);
 
 export const ZPasswordSchema = z
   .string()
