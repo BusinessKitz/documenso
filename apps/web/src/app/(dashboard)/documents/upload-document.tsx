@@ -126,7 +126,6 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
   useEffect(() => {
 
     if (window.self !== window.top) {
-      if(window.top && window.top.location.href === 'https://uat-app.businesskitz.com/documents'){alert(JSON.stringify(session))}
       window.addEventListener(
         'message',
         (event) => {
