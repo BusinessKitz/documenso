@@ -49,6 +49,15 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
         secure: true
       }
     },
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        path: '/',
+        secure: true
+      }
+    },
   },
   providers: [
     CredentialsProvider({
