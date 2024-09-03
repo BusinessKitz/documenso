@@ -328,25 +328,24 @@ export const AddSignersFormPartial = ({
             >
               <Button
                 type="button"
-                className="flex-1"
-                disabled={isSubmitting || signers.length >= remaining.recipients}
-                onClick={() => onAddSigner()}
-              >
-                <Plus className="-ml-1 mr-2 h-5 w-5" />
-                Add signer
-              </Button>
-              <Button
-                type="button"
                 variant="secondary"
-                className="dark:bg-muted dark:hover:bg-muted/80 bg-black/5 hover:bg-black/10"
+                className="dark:bg-muted dark:hover:bg-muted/80 bg-black/5 hover:bg-black/10 flex-1"
                 disabled={
                   isSubmitting ||
                   form.getValues('signers').some((signer) => signer.email === user?.email)
                 }
                 onClick={() => onAddSelfSigner()}
               >
-                <Plus className="-ml-1 mr-2 h-5 w-5" />
                 Add myself
+              </Button>
+              <Button
+                type="button"
+                className="flex-1"
+                disabled={isSubmitting || signers.length >= remaining.recipients}
+                onClick={() => onAddSigner()}
+              >
+                <Plus className="h-5 w-5" />
+                {/*Add signer*/}
               </Button>
             </div>
 

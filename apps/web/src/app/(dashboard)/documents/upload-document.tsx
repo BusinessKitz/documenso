@@ -38,7 +38,8 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
 
   const {quota, remaining} = useLimits();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const {mutateAsync: createDocument} = trpc.document.createDocument.useMutation();
 
@@ -86,7 +87,7 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
       router.push(`${formatDocumentsPath(team?.url)}/${id}/edit`);
     } catch (err) {
       const error = AppError.parseError(err);
-
+      setIsLoading(false);
       console.error(err);
 
       if (error.code === 'INVALID_DOCUMENT_FILE') {
@@ -109,7 +110,7 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
         });
       }
     } finally {
-      setIsLoading(false);
+      //setIsLoading(false);
     }
   };
 
@@ -130,16 +131,17 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
         (event) => {
           if (event.data && event.data.email && session) {
             if (!session || (session.user.email !== event.data.email)) {
-              signOut().catch(()=>{});
+              signOut().catch(() => {
+              });
             } else {
-              setIsLoading(false);
+              setIsAuthLoading(false);
             }
           }
         },
         false,
       );
     } else {
-      setIsLoading(false);
+      setIsAuthLoading(false);
     }
 
   }, [])
@@ -164,9 +166,10 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
           )}
       </div>
 
-      {isLoading && (
+      {(isLoading || isAuthLoading) && (
         <div
-          className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-50"
+          className="fixed inset-0 flex items-center justify-center bg-white opacity-50"
+          style={{zIndex: 100}}
         >
           <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
         </div>
