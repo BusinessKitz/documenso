@@ -5,7 +5,7 @@ const { withContentlayer } = require('next-contentlayer');
 const { withAxiom } = require('next-axiom');
 
 const ENV_FILES = ['.env', '.env.local', `.env.${process.env.NODE_ENV || 'development'}`];
-const CORS_DOMAIN = process.env.CORS_DOMAIN;
+const CORS_DOMAIN = process.env.CORS_DOMAIN || 'https://app.businesskitz.com';
 
 ENV_FILES.forEach((file) => {
   require('dotenv').config({
