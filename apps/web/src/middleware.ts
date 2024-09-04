@@ -44,7 +44,12 @@ export default async function middleware(req: NextRequest) {
     const redirectUrl = new URL(`${req.nextUrl.pathname}/documents`, req.url);
 
     const response = NextResponse.redirect(redirectUrl);
-    response.cookies.set('preferred-team-url', req.nextUrl.pathname.replace('/t/', ''));
+    response.cookies.set('preferred-team-url', req.nextUrl.pathname.replace('/t/', ''), {
+      httpOnly: true,
+      sameSite: 'none',
+      path: '/',
+      secure: true
+    });
 
     return response;
   }
@@ -52,7 +57,12 @@ export default async function middleware(req: NextRequest) {
   // Set the preferred team url cookie if user accesses a team page.
   if (req.nextUrl.pathname.startsWith('/t/')) {
     const response = NextResponse.next();
-    response.cookies.set('preferred-team-url', req.nextUrl.pathname.split('/')[2]);
+    response.cookies.set('preferred-team-url', req.nextUrl.pathname.split('/')[2], {
+      httpOnly: true,
+      sameSite: 'none',
+      path: '/',
+      secure: true
+    });
 
     return response;
   }
@@ -70,7 +80,12 @@ export default async function middleware(req: NextRequest) {
   // Clear preferred team url cookie if user accesses a non team page from a team page.
   if (resetPreferredTeamUrl || req.nextUrl.pathname === '/documents') {
     const response = NextResponse.next();
-    response.cookies.set('preferred-team-url', '');
+    response.cookies.set('preferred-team-url', '', {
+      httpOnly: true,
+      sameSite: 'none',
+      path: '/',
+      secure: true
+    });
 
     return response;
   }
