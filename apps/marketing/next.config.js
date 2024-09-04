@@ -5,6 +5,7 @@ const { withContentlayer } = require('next-contentlayer');
 const { withAxiom } = require('next-axiom');
 
 const ENV_FILES = ['.env', '.env.local', `.env.${process.env.NODE_ENV || 'development'}`];
+const CORS_DOMAIN = process.env.CORS_DOMAIN;
 
 ENV_FILES.forEach((file) => {
   require('dotenv').config({
@@ -89,7 +90,7 @@ const config = {
           },
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://uat-app.businesskitz.com', // Or specify the specific origin
+            value: CORS_DOMAIN, // Or specify the specific origin
           },
           {
             key: 'Access-Control-Allow-Methods',
