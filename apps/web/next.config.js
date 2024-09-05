@@ -23,7 +23,7 @@ const FONT_NOTO_SANS_BYTES = fs.readFileSync(
   path.join(__dirname, '../../packages/assets/fonts/noto-sans.ttf'),
 );
 
-const CORS_DOMAIN = process.env.CORS_DOMAIN || 'https://app.businesskitz.com';
+const allowedOrigins = ['https://app.businesskitz.com', 'https://uat-app.businesskitz.com'];
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -71,7 +71,7 @@ const config = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: CORS_DOMAIN, // Use the CORS_DOMAIN from the environment variable
+            value: allowedOrigins.join(', '), // Use the CORS_DOMAIN from the environment variable
           },
           {
             key: 'Access-Control-Allow-Methods',
