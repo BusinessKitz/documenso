@@ -3,17 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const { version } = require('./package.json');
 const { withAxiom } = require('next-axiom');
+const { withSentryConfig } = require('@sentry/nextjs');
 
 const ENV_FILES = ['.env', '.env.local', `.env.${process.env.NODE_ENV || 'development'}`];
 
+//
 ENV_FILES.forEach((file) => {
   require('dotenv').config({
     path: path.join(__dirname, `../../${file}`),
   });
 });
 
-// !: This is a temp hack to get caveat working without placing it back in the public directory.
-// !: By inlining this at build time we should be able to sign faster.
+// Temp hack to get caveat working without placing it in the public directory
 const FONT_CAVEAT_BYTES = fs.readFileSync(
   path.join(__dirname, '../../packages/assets/fonts/caveat.ttf'),
 );
@@ -21,6 +22,8 @@ const FONT_CAVEAT_BYTES = fs.readFileSync(
 const FONT_NOTO_SANS_BYTES = fs.readFileSync(
   path.join(__dirname, '../../packages/assets/fonts/noto-sans.ttf'),
 );
+
+const CORS_DOMAIN = process.env.CORS_DOMAIN || 'https://app.businesskitz.com';
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -58,8 +61,33 @@ const config = {
     if (isServer) {
       config.resolve.alias.canvas = false;
     }
-
     return config;
+  },
+  async headers() {
+    return [
+      {
+        // Apply these headers to all routes
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: CORS_DOMAIN, // Use the CORS_DOMAIN from the environment variable
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization',
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true', // Allow credentials (cookies, etc.)
+          },
+        ],
+      },
+    ];
   },
   async rewrites() {
     return [
@@ -97,43 +125,14 @@ const config = {
   },
 };
 
-module.exports = withAxiom(config);
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require('@sentry/nextjs');
-
-module.exports = withSentryConfig(module.exports, {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
-
-  org: 'business-kitz-pty-ltd',
-  project: 'kitzdocumenso',
-
-  // Only print logs for uploading source maps in CI
-  silent: !process.env.CI,
-
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
-
-  // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
-  // tunnelRoute: "/monitoring",
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
-});
+module.exports = withAxiom(
+  withSentryConfig(config, {
+    org: 'business-kitz-pty-ltd',
+    project: 'kitzdocumenso',
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    hideSourceMaps: true,
+    disableLogger: true,
+    automaticVercelMonitors: true,
+  }),
+);

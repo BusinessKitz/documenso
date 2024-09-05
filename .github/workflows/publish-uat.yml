@@ -1,13 +1,13 @@
 name: Publish Docker
 on:
   push:
-    branches: ['release']
+    branches: ['uat-release']
 env:
   AWS_REGION: ap-southeast-2
-  ECS_SERVICE: prod-documenso-service
+  ECS_SERVICE: uat-documenso-service
   ECS_CLUSTER: documenso-standalone
-  ECS_TASK_DEFINITION: .aws/prod-task-definition.json
-  CONTAINER_NAME: prod-documenso
+  ECS_TASK_DEFINITION: .aws/uat-task-definition.json
+  CONTAINER_NAME: uat-documenso
 jobs:
   build_and_publish_platform_containers:
     name: Build and publish platform containers
@@ -29,7 +29,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: prod-documenso
+          ECR_REPOSITORY: tf-uat-documenso
           BUILD_PLATFORM: arm64
         run: |
           APP_VERSION="$(git name-rev --tags --name-only $(git rev-parse HEAD) | head -n 1 | sed 's/\^0//')"
