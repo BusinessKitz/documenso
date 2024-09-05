@@ -4,8 +4,8 @@ on:
     branches: ['release']
 env:
   AWS_REGION: ap-southeast-2
-  ECS_SERVICE: prod-documenso
-  ECS_CLUSTER: prod-documenso-cluster
+  ECS_SERVICE: prod-documenso-service
+  ECS_CLUSTER: documenso-standalone
   ECS_TASK_DEFINITION: .aws/prod-task-definition.json
   CONTAINER_NAME: prod-documenso
 jobs:
