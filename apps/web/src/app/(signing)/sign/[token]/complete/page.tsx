@@ -186,7 +186,7 @@ export default async function CompletedSigningPage({
           </div>
         </div>
 
-        {canSignUp && (
+        {/*canSignUp && (
           <div className={`flex max-w-xl flex-col items-center justify-center p-4 md:p-12`}>
             <h2 className="mt-8 text-center text-xl font-semibold md:mt-0">
               Need to sign documents?
@@ -198,7 +198,7 @@ export default async function CompletedSigningPage({
 
             <ClaimAccount defaultName={recipientName} defaultEmail={recipient.email}/>
           </div>
-        )}
+        )*/}
       </div>
     </div>
   );
