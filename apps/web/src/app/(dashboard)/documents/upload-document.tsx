@@ -117,8 +117,8 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
   const onFileDropRejected = () => {
     toast({
       title: 'Your document failed to upload.',
-      description: `Only PDF files are accepted.`,
-      duration: 5000,
+      description: `Word documents (.doc and .docx) are not supported for signing, please upload a PDF version of the document. Alternatively you can upload the word document to the Vault and start the signing process from there.`,
+      duration: 10000,
       variant: 'destructive',
     });
   };
