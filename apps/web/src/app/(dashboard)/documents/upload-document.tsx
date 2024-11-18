@@ -1,24 +1,24 @@
 'use client';
-import {signOut} from 'next-auth/react';
-import {useMemo, useState, useEffect} from 'react';
 
-import {useRouter} from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
-import {Loader} from 'lucide-react';
-import {useSession} from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-import {useLimits} from '@documenso/ee/server-only/limits/provider/client';
-import {useAnalytics} from '@documenso/lib/client-only/hooks/use-analytics';
-import {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} from '@documenso/lib/constants/app';
-import {AppError} from '@documenso/lib/errors/app-error';
-import {createDocumentData} from '@documenso/lib/server-only/document-data/create-document-data';
-import {putPdfFile} from '@documenso/lib/universal/upload/put-file';
-import {formatDocumentsPath} from '@documenso/lib/utils/teams';
-import {TRPCClientError} from '@documenso/trpc/client';
-import {trpc} from '@documenso/trpc/react';
-import {cn} from '@documenso/ui/lib/utils';
-import {DocumentDropzone} from '@documenso/ui/primitives/document-dropzone';
-import {useToast} from '@documenso/ui/primitives/use-toast';
+import { Loader } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+
+import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
+import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
+import { AppError } from '@documenso/lib/errors/app-error';
+import { createDocumentData } from '@documenso/lib/server-only/document-data/create-document-data';
+import { putPdfFile } from '@documenso/lib/universal/upload/put-file';
+import { formatDocumentsPath } from '@documenso/lib/utils/teams';
+import { TRPCClientError } from '@documenso/trpc/client';
+import { trpc } from '@documenso/trpc/react';
+import { cn } from '@documenso/ui/lib/utils';
+import { DocumentDropzone } from '@documenso/ui/primitives/document-dropzone';
+import { useToast } from '@documenso/ui/primitives/use-toast';
 
 export type UploadDocumentProps = {
   className?: string;
@@ -28,20 +28,20 @@ export type UploadDocumentProps = {
   };
 };
 
-export const UploadDocument = ({className, team}: UploadDocumentProps) => {
+export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
   const router = useRouter();
   const analytics = useAnalytics();
 
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  const {quota, remaining} = useLimits();
+  const { quota, remaining } = useLimits();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const {mutateAsync: createDocument} = trpc.document.createDocument.useMutation();
+  const { mutateAsync: createDocument } = trpc.document.createDocument.useMutation();
 
   const disabledMessage = useMemo(() => {
     if (remaining.documents === 0) {
@@ -59,14 +59,14 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
     try {
       setIsLoading(true);
 
-      const {type, data} = await putPdfFile(file);
+      const { type, data } = await putPdfFile(file);
 
-      const {id: documentDataId} = await createDocumentData({
+      const { id: documentDataId } = await createDocumentData({
         type,
         data,
       });
 
-      const {id} = await createDocument({
+      const { id } = await createDocument({
         title: file.name,
         documentDataId,
         teamId: team?.id,
@@ -117,22 +117,20 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
   const onFileDropRejected = () => {
     toast({
       title: 'Your document failed to upload.',
-      description: `File cannot be larger than ${APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB`,
-      duration: 5000,
+      description: `Word documents (.doc and .docx) are not supported for signing, please upload a PDF version of the document. Alternatively you can upload the word document to the Vault and start the signing process from there.`,
+      duration: 10000,
       variant: 'destructive',
     });
   };
 
   useEffect(() => {
-
     if (window.self !== window.top) {
       window.addEventListener(
         'message',
         (event) => {
           if (event.data && event.data.email && session) {
-            if (!session || (session.user.email !== event.data.email)) {
-              signOut().catch(() => {
-              });
+            if (!session || session.user.email !== event.data.email) {
+              signOut().catch(() => {});
             } else {
               setIsAuthLoading(false);
             }
@@ -143,13 +141,12 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
     } else {
       setIsAuthLoading(false);
     }
-
-  }, [])
+  }, []);
 
   return (
     <div className={cn(className)}>
       <DocumentDropzone
-        className="h-[min(400px,50vh)] document-dropzone"
+        className="document-dropzone h-[min(400px,50vh)]"
         disabled={remaining.documents === 0 || !session?.user.emailVerified}
         disabledMessage={disabledMessage}
         onDrop={onFileDrop}
@@ -169,9 +166,9 @@ export const UploadDocument = ({className, team}: UploadDocumentProps) => {
       {(isLoading || isAuthLoading) && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-white opacity-50"
-          style={{zIndex: 100}}
+          style={{ zIndex: 100 }}
         >
-          <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
+          <Loader className="text-primary h-16 w-16 animate-spin" style={{ marginTop: '-265px' }} />
         </div>
       )}
     </div>
