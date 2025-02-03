@@ -33,29 +33,29 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
   },
   cookies: {
     callbackUrl: {
-      name: `__Secure-next-auth.callback-url`,
+      name: `callback-url`, // `__Secure-next-auth.callback-url`,
       options: {
-        sameSite: 'none',
+        sameSite: 'lax', // 'none',
         path: '/',
-        secure: true,
+        secure: false, //true
       },
     },
     csrfToken: {
-      name: `__Host-next-auth.csrf-token`,
+      name: `csrf-token`, //`__Host-next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'lax', //'none',
         path: '/',
-        secure: true,
+        secure: false, //true
       },
     },
     sessionToken: {
-      name: `__Secure-next-auth.session-token`,
+      name: `session-token`, //__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'lax', //'none',
         path: '/',
-        secure: true,
+        secure: false, // true
       },
     },
   },
@@ -164,6 +164,31 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
         };
       },
     }),
+    {
+      id: 'oidc',
+      name: 'OIDC',
+      type: 'oauth',
+
+      wellKnown: process.env.NEXT_PRIVATE_OIDC_WELL_KNOWN,
+      clientId: process.env.NEXT_PRIVATE_OIDC_CLIENT_ID,
+      clientSecret: process.env.NEXT_PRIVATE_OIDC_CLIENT_SECRET,
+
+      authorization: { params: { scope: 'openid email profile' } },
+      checks: ['pkce', 'state'],
+
+      idToken: true,
+      allowDangerousEmailAccountLinking: true,
+
+      profile(profile) {
+        console.log('Profile: ', profile);
+        return {
+          id: profile.sub,
+          email: profile.email || profile.preferred_username,
+          name: profile.name || `${profile.given_name} ${profile.family_name}`.trim(),
+          emailVerified: profile.email_verified ? new Date().toISOString() : null,
+        };
+      },
+    },
     CredentialsProvider({
       id: 'webauthn',
       name: 'Keypass',
