@@ -37,8 +37,8 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
       options: {
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
     csrfToken: {
       name: `__Host-next-auth.csrf-token`,
@@ -46,8 +46,8 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
         httpOnly: true,
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
     sessionToken: {
       name: `__Secure-next-auth.session-token`,
@@ -55,8 +55,8 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
         httpOnly: true,
         sameSite: 'none',
         path: '/',
-        secure: true
-      }
+        secure: true,
+      },
     },
   },
   providers: [

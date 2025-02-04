@@ -1,26 +1,26 @@
 'use client';
 
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import {zodResolver} from '@hookform/resolvers/zod';
-import {browserSupportsWebAuthn, startAuthentication} from '@simplewebauthn/browser';
-import {KeyRoundIcon, Loader} from 'lucide-react';
-import {signIn} from 'next-auth/react';
-import {useForm} from 'react-hook-form';
-import {FcGoogle} from 'react-icons/fc';
-import {match} from 'ts-pattern';
-import {z} from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { browserSupportsWebAuthn, startAuthentication } from '@simplewebauthn/browser';
+import { KeyRoundIcon, Loader } from 'lucide-react';
+import { signIn } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
+import { match } from 'ts-pattern';
+import { z } from 'zod';
 
-import {useFeatureFlags} from '@documenso/lib/client-only/providers/feature-flag';
-import {AppError, AppErrorCode} from '@documenso/lib/errors/app-error';
-import {ErrorCode, isErrorCode} from '@documenso/lib/next-auth/error-codes';
-import {trpc} from '@documenso/trpc/react';
-import {ZCurrentPasswordSchema} from '@documenso/trpc/server/auth-router/schema';
-import {cn} from '@documenso/ui/lib/utils';
-import {Button} from '@documenso/ui/primitives/button';
+import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
+import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
+import { ErrorCode, isErrorCode } from '@documenso/lib/next-auth/error-codes';
+import { trpc } from '@documenso/trpc/react';
+import { ZCurrentPasswordSchema } from '@documenso/trpc/server/auth-router/schema';
+import { cn } from '@documenso/ui/lib/utils';
+import { Button } from '@documenso/ui/primitives/button';
 import {
   Dialog,
   DialogContent,
@@ -36,9 +36,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
-import {Input} from '@documenso/ui/primitives/input';
-import {PasswordInput} from '@documenso/ui/primitives/password-input';
-import {useToast} from '@documenso/ui/primitives/use-toast';
+import { Input } from '@documenso/ui/primitives/input';
+import { PasswordInput } from '@documenso/ui/primitives/password-input';
+import { useToast } from '@documenso/ui/primitives/use-toast';
 
 const ERROR_MESSAGES: Partial<Record<keyof typeof ErrorCode, string>> = {
   [ErrorCode.CREDENTIALS_NOT_FOUND]: 'The email or password provided is incorrect',
@@ -70,9 +70,9 @@ export type SignInFormProps = {
   isGoogleSSOEnabled?: boolean;
 };
 
-export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignInFormProps) => {
-  const {toast} = useToast();
-  const {getFlag} = useFeatureFlags();
+export const SignInForm = ({ className, initialEmail, isGoogleSSOEnabled }: SignInFormProps) => {
+  const { toast } = useToast();
+  const { getFlag } = useFeatureFlags();
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const router = useRouter();
@@ -93,7 +93,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
 
   const isPasskeyEnabled = getFlag('app_passkey');
 
-  const {mutateAsync: createPasskeySigninOptions} =
+  const { mutateAsync: createPasskeySigninOptions } =
     trpc.auth.createPasskeySigninOptions.useMutation();
 
   const form = useForm<TSignInFormSchema>({
@@ -186,7 +186,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
     }
   };
 
-  const onFormSubmit = async ({email, password, totpCode, backupCode}: TSignInFormSchema) => {
+  const onFormSubmit = async ({ email, password, totpCode, backupCode }: TSignInFormSchema) => {
     try {
       const credentials: Record<string, string> = {
         email,
@@ -250,7 +250,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
 
   const onSignInWithGoogleClick = async () => {
     try {
-      await signIn('google', {callbackUrl: LOGIN_REDIRECT_PATH});
+      await signIn('google', { callbackUrl: LOGIN_REDIRECT_PATH });
     } catch (err) {
       toast({
         title: 'An unknown error occurred',
@@ -285,17 +285,17 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
       /*formRef?.current.dispatchEvent(
         new Event("submit", {cancelable: true, bubbles: true})
       );*/
-      onFormSubmit({email: emailValue, password: passwordValue}).catch(() => {
-      });
+      onFormSubmit({ email: emailValue, password: passwordValue }).catch(() => {});
     }
   }, [emailValue, passwordValue]);
 
-  return (<>
-      {isInIframe && <div
-        className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100"
-      >
-        <Loader className="text-primary h-16 w-16 animate-spin" style={{marginTop: '-265px'}}/>
-      </div>}
+  return (
+    <>
+      {isInIframe && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white opacity-100">
+          <Loader className="text-primary h-16 w-16 animate-spin" style={{ marginTop: '-265px' }} />
+        </div>
+      )}
       <Form {...form}>
         <form
           ref={formRef}
@@ -309,15 +309,15 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
             <FormField
               control={form.control}
               name="email"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
 
                   <FormControl>
-                    <Input {...field} type="email"/>
+                    <Input {...field} type="email" />
                   </FormControl>
 
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -325,7 +325,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
             <FormField
               control={form.control}
               name="password"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
 
@@ -333,7 +333,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
                     <PasswordInput {...field} />
                   </FormControl>
 
-                  <FormMessage/>
+                  <FormMessage />
 
                   <p className="mt-2 text-right">
                     <Link
@@ -358,9 +358,9 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
 
             {(isGoogleSSOEnabled || isPasskeyEnabled) && (
               <div className="relative flex items-center justify-center gap-x-4 py-2 text-xs uppercase">
-                <div className="bg-border h-px flex-1"/>
+                <div className="bg-border h-px flex-1" />
                 <span className="text-muted-foreground bg-transparent">Or continue with</span>
-                <div className="bg-border h-px flex-1"/>
+                <div className="bg-border h-px flex-1" />
               </div>
             )}
 
@@ -373,7 +373,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
                 disabled={isSubmitting}
                 onClick={onSignInWithGoogleClick}
               >
-                <FcGoogle className="mr-2 h-5 w-5"/>
+                <FcGoogle className="mr-2 h-5 w-5" />
                 Google
               </Button>
             )}
@@ -388,7 +388,7 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
                 className="bg-background text-muted-foreground border"
                 onClick={onSignInWithPasskey}
               >
-                {!isPasskeyLoading && <KeyRoundIcon className="-ml-1 mr-1 h-5 w-5"/>}
+                {!isPasskeyLoading && <KeyRoundIcon className="-ml-1 mr-1 h-5 w-5" />}
                 Passkey
               </Button>
             )}
@@ -410,13 +410,13 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
                   <FormField
                     control={form.control}
                     name="totpCode"
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>Authentication Token</FormLabel>
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -426,13 +426,13 @@ export const SignInForm = ({className, initialEmail, isGoogleSSOEnabled}: SignIn
                   <FormField
                     control={form.control}
                     name="backupCode"
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel> Backup Code</FormLabel>
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
