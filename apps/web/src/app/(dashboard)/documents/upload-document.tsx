@@ -124,24 +124,12 @@ export const UploadDocument = ({ className, team }: UploadDocumentProps) => {
   };
 
   useEffect(() => {
-    if (window.self !== window.top) {
-      window.addEventListener(
-        'message',
-        (event) => {
-          if (event.data && event.data.email && session) {
-            if (!session || session.user.email !== event.data.email) {
-              signOut().catch(() => {});
-            } else {
-              setIsAuthLoading(false);
-            }
-          }
-        },
-        false,
-      );
-    } else {
-      setIsAuthLoading(false);
+    if (!session || !session.user.email) {
+      signOut().catch(() => {});
+      return;
     }
-  }, []);
+    setIsAuthLoading(false);
+  }, [session]);
 
   return (
     <div className={cn(className)}>
