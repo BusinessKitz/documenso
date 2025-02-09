@@ -298,26 +298,37 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, account }) {
+    async jwt({ token, user, trigger, account, profile }) {
       const merged = {
         ...token,
         ...user,
-        emailVerified: user?.emailVerified ? new Date(user.emailVerified).toISOString() : null,
+        emailVerified: profile?.email_verified
+          ? new Date(profile.email_verified).toISOString()
+          : null,
       } satisfies JWT;
+      const userId = Number(merged.id ?? token.sub);
+      let retrieved = await prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+      });
 
-      if (!merged.email || typeof merged.emailVerified !== 'string') {
-        const userId = Number(merged.id ?? token.sub);
+      if (!retrieved) {
+        return token;
+      }
 
-        const retrieved = await prisma.user.findFirst({
+      if (merged.emailVerified && !retrieved.emailVerified) {
+        retrieved = await prisma.user.update({
           where: {
-            id: userId,
+            id: Number(merged.id),
+          },
+          data: {
+            emailVerified: merged.emailVerified,
           },
         });
+      }
 
-        if (!retrieved) {
-          return token;
-        }
-
+      if (!merged.email || typeof merged.emailVerified !== 'string') {
         merged.id = retrieved.id;
         merged.name = retrieved.name;
         merged.email = retrieved.email;
