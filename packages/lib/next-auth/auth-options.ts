@@ -180,7 +180,6 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
       allowDangerousEmailAccountLinking: true,
 
       profile(profile) {
-        console.log('Profile: ', profile);
         return {
           id: profile.sub,
           email: profile.email || profile.preferred_username,
