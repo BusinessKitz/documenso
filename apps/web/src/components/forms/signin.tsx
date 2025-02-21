@@ -118,10 +118,11 @@ export const SignInForm = ({
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const autologin = urlParams.get('auto_login');
+    const redirect = urlParams.get('redirect');
 
     if (autologin == 'oidc' && isOIDCSSOEnabled) {
       setLoggingIn(true);
-      void signIn('oidc', { callbackUrl: LOGIN_REDIRECT_PATH });
+      void signIn('oidc', { callbackUrl: redirect ?? LOGIN_REDIRECT_PATH });
     }
   }, [loggingIn, isOIDCSSOEnabled]);
 
