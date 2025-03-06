@@ -83,6 +83,7 @@ RUN adduser --system --uid 1001 nextjs
 # Install necessary tools
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
+RUN apk add --no-cache openssl
 # Switch to root user to create the directory and change its ownership
 USER root
 RUN mkdir -p /opt/documenso/
