@@ -1,7 +1,7 @@
 ###########################
 #     BASE CONTAINER      #
 ###########################
-FROM node:18-alpine AS base
+FROM node:20-alpine3.20 AS base
 
 ###########################
 #    BUILDER CONTAINER    #
@@ -11,7 +11,6 @@ FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
-RUN apk add --no-cache openssl
 WORKDIR /app
 COPY . .
 
@@ -30,7 +29,6 @@ FROM base AS installer
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
-RUN apk add --no-cache openssl
 # Required for node_modules/aws-crt
 RUN apk add --no-cache make cmake g++
 
@@ -85,7 +83,6 @@ RUN adduser --system --uid 1001 nextjs
 # Install necessary tools
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache jq
-RUN apk add --no-cache openssl
 # Switch to root user to create the directory and change its ownership
 USER root
 RUN mkdir -p /opt/documenso/
