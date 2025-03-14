@@ -33,29 +33,29 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
   },
   cookies: {
     callbackUrl: {
-      name: `callback-url`, // `__Secure-next-auth.callback-url`,
+      name: `__Secure-next-auth.callback-url`,
       options: {
-        sameSite: 'lax', // 'none',
+        sameSite: 'none',
         path: '/',
-        secure: false, //true
+        secure: true,
       },
     },
     csrfToken: {
-      name: `csrf-token`, //`__Host-next-auth.csrf-token`,
+      name: `__Host-next-auth.csrf-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax', //'none',
+        sameSite: 'none',
         path: '/',
-        secure: false, //true
+        secure: true,
       },
     },
     sessionToken: {
-      name: `session-token`, //__Secure-next-auth.session-token`,
+      name: `__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax', //'none',
+        sameSite: 'none',
         path: '/',
-        secure: false, // true
+        secure: true,
       },
     },
   },
