@@ -23,7 +23,11 @@ const FONT_NOTO_SANS_BYTES = fs.readFileSync(
   path.join(__dirname, '../../packages/assets/fonts/noto-sans.ttf'),
 );
 
-const allowedOrigins = ['https://app.businesskitz.com', 'https://uat-app.businesskitz.com'];
+const allowedOrigins = [
+  'https://app.businesskitz.com',
+  'https://uat-app.businesskitz.com',
+  'https://business-kitz.com',
+];
 
 /** @type {import('next').NextConfig} */
 const config = {

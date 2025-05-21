@@ -3,9 +3,9 @@ name: 'Continuous Integration'
 on:
   workflow_call:
   push:
-    branches: ['main', 'uat']
+    branches: ['main', 'uat', 'dev']
   pull_request:
-    branches: ['main', 'uat']
+    branches: ['main', 'uat', 'dev']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
