@@ -25,7 +25,7 @@ const FONT_NOTO_SANS_BYTES = fs.readFileSync(
 
 const allowedOrigins = [
   'https://app.businesskitz.com',
-  'https://uat-app.businesskitz.com',
+  'https://businesskits.co.nz',
   'https://business-kitz.com',
 ];
 
