@@ -89,7 +89,7 @@ const config = {
           },
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://uat-app.businesskitz.com', // Or specify the specific origin
+            value: 'https://businesskits.co.nz', // Or specify the specific origin
           },
           {
             key: 'Access-Control-Allow-Methods',
