@@ -59,7 +59,11 @@ export const TemplateDocumentCompleted = ({
             />
             Download
           </Button>
-          <p><a href="https://app.businesskitz.com.au/signup" target="_blank">Sign up to Business Kitz application.</a></p>
+          <p>
+            <a href="https://businesskitz.com/signup" target="_blank">
+              Sign up to Business Kitz application.
+            </a>
+          </p>
         </Section>
       </Section>
     </>
