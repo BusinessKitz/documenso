@@ -154,6 +154,22 @@ export const completeDocumentWithToken = async ({
 
   const updatedDocument = await getDocument({ token, documentId });
 
+  try {
+    const nextBackendUrl = process.env.NEXT_BACKEND;
+    await fetch(`${nextBackendUrl}/document-sign/${document.id}/capture/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: updatedDocument.status,
+      }),
+    });
+  } catch (error) {
+    // Log error but don't throw to avoid breaking the signing flow
+    console.error('Failed to capture document status:', error);
+  }
+
   await triggerWebhook({
     event: WebhookTriggerEvents.DOCUMENT_SIGNED,
     data: updatedDocument,
