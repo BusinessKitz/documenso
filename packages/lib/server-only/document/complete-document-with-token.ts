@@ -156,7 +156,7 @@ export const completeDocumentWithToken = async ({
 
   try {
     const nextBackendUrl = process.env.NEXT_BACKEND;
-    await fetch(`${nextBackendUrl}/document-sign/${document.id}/capture/`, {
+    await fetch(`${nextBackendUrl}/api/document-sign/${document.id}/capture/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
