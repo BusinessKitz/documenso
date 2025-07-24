@@ -2,23 +2,12 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": [
-        "prebuild",
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["prebuild", "^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "prebuild": {
-      "dependsOn": [
-        "^prebuild"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^prebuild"],
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
       "cache": false
@@ -34,9 +23,7 @@
       "persistent": true
     },
     "start": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
@@ -44,15 +31,11 @@
       "cache": false
     },
     "test:e2e": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "cache": false
     }
   },
-  "globalDependencies": [
-    "**/.env.*local"
-  ],
+  "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
     "APP_VERSION",
     "NEXT_PRIVATE_ENCRYPTION_KEY",
@@ -122,6 +105,7 @@
     "NEXT_PRIVATE_JOBS_PROVIDER",
     "NEXT_PRIVATE_TRIGGER_API_KEY",
     "NEXT_PRIVATE_TRIGGER_API_URL",
+    "NEXT_BACKEND",
     "NEXT_PRIVATE_INNGEST_EVENT_KEY",
     "NEXT_RUNTIME",
     "CI",
