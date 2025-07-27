@@ -117,6 +117,7 @@ export const EditDocumentForm = ({
         },
         (oldData) => ({...(oldData || initialDocument), ...newData}),
       );
+      window.location.reload();
     },
   });
 
